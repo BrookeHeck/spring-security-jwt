@@ -5,18 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDto implements Serializable {
     private Long id;
     private String userId;
     private String username;
     private String email;
     private String profileImageUrl;
-    private Date lastLoginDate;
-    private Date dateJoined;
+    private LocalDate lastLoginDate;
+    private LocalDate dateJoined;
 }

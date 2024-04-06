@@ -3,5 +3,6 @@ package study.games.flashcard.wars.enums;
 public enum USER_STATUS {
     ACTIVE,
     INACTIVE,
-    LOCKED
+    ADMIN_LOCK,
+    PASSWORD_LOCK
 }
