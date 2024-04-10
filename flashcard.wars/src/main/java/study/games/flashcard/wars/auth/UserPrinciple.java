@@ -30,7 +30,8 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        LocalDate yearAgo = LocalDate.now().minusYears(1);
+        return user.getLastLoginDate().isAfter(yearAgo);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        LocalDate days120Ago= LocalDate.now().minusDays(120);
+        LocalDate days120Ago = LocalDate.now().minusDays(120);
         return user.getLastPasswordUpdate().isAfter(days120Ago);
     }
 
