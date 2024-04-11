@@ -1,13 +1,17 @@
 package study.games.flashcard.wars.auth;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static study.games.flashcard.wars.auth.SecurityConstants.*;
 
@@ -34,6 +38,28 @@ public class JwtService {
             authorities.add(grantedAuthority.getAuthority());
         }
         return authorities;
+    }
+
+    public List<GrantedAuthority> getAuthorities(String jwt) {
+        List<String> claims = getClaimsFromJwt(jwt);
+        return claims.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    private List<String> getClaimsFromJwt(String jwt) {
+        JWTVerifier verifier = getJwtVerifier();
+        return verifier.verify(jwt).getClaim(AUTHORITIES).asList(String.class);
+    }
+
+    private JWTVerifier getJwtVerifier() {
+        JWTVerifier verifier;
+        try {
+            Algorithm algorithm = Algorithm.HMAC512(secret);
+            verifier = JWT.require(algorithm).withIssuer(JWT_ISSUER).build();
+        } catch (JWTVerificationException e) {
+            e.printStackTrace();
+            throw new JWTVerificationException("token cannot be verified");
+        }
+        return verifier;
     }
 
 }
