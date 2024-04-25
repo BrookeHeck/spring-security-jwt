@@ -4,9 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +64,13 @@ public class JwtService {
             throw new JWTVerificationException("token cannot be verified");
         }
         return verifier;
+    }
+
+    public Authentication getAuthentication(String username, List<GrantedAuthority> authorities, HttpServletRequest request) {
+        UsernamePasswordAuthenticationToken userPassAuthToken =
+                new UsernamePasswordAuthenticationToken(username, null, authorities);
+        userPassAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        return userPassAuthToken;
     }
 
 }
