@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static study.games.flashcard.wars.auth.SecurityConstants.*;
 
+@Service
 public class JwtService {
     @Value("${spring.security.secret-key}")
     private String secret;
