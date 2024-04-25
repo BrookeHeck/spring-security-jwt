@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -71,6 +72,17 @@ public class JwtService {
                 new UsernamePasswordAuthenticationToken(username, null, authorities);
         userPassAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return userPassAuthToken;
+    }
+
+    private boolean isTokenValid(String username, String token) {
+        JWTVerifier verifier = getJwtVerifier();
+        return StringUtils.isNotEmpty(username) && !isTokenExpired(verifier, token);
+    }
+
+
+    private boolean isTokenExpired(JWTVerifier verifier, String token) {
+        Date expiration = verifier.verify(token).getExpiresAt();
+        return expiration.before(new Date());
     }
 
 }
