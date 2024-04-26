@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.enums;
+package study.games.flashcard.wars.models.enums;
 
 public enum USER_STATUS {
     ACTIVE,

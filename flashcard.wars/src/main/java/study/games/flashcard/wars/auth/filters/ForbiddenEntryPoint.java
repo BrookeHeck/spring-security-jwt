@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.auth;
+package study.games.flashcard.wars.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
+public class ForbiddenEntryPoint extends Http403ForbiddenEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException arg2) throws IOException {
         Response<String> httpResponse = Response.<String>builder()
@@ -22,7 +22,7 @@ public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
                 .httpStatusCode(FORBIDDEN.value())
                 .timeStamp(LocalDateTime.now())
                 .message(FORBIDDEN.getReasonPhrase().toUpperCase())
-                .data(null)
+                .data("You need to login to access this page.")
                 .build();
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(FORBIDDEN.value());
