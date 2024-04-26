@@ -22,7 +22,7 @@ public class ForbiddenEntryPoint extends Http403ForbiddenEntryPoint {
                 .httpStatusCode(FORBIDDEN.value())
                 .timeStamp(LocalDateTime.now())
                 .message(FORBIDDEN.getReasonPhrase().toUpperCase())
-                .data(null)
+                .data("You need to login to access this page.")
                 .build();
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(FORBIDDEN.value());
