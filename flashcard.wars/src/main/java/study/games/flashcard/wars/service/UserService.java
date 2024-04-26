@@ -1,6 +1,5 @@
 package study.games.flashcard.wars.service;
 
-import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
 
 public interface UserService {

@@ -2,7 +2,6 @@ package study.games.flashcard.wars.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
