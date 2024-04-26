@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import study.games.flashcard.wars.enums.ROLE;
-import study.games.flashcard.wars.enums.USER_STATUS;
+import study.games.flashcard.wars.models.enums.ROLE;
+import study.games.flashcard.wars.models.enums.USER_STATUS;
 
 import java.io.Serializable;
 import java.time.LocalDate;

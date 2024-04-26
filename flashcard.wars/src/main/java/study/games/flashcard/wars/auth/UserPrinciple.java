@@ -3,7 +3,7 @@ package study.games.flashcard.wars.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import study.games.flashcard.wars.enums.USER_STATUS;
+import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.models.entities.AppUser;
 
 import java.time.LocalDate;
