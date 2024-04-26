@@ -10,9 +10,9 @@ public interface UserService {
 
     AppUser getUserById(Long id);
 
-    AppUser createUser(UserDto userDto);
+    AppUser createUser(AppUser appUser);
 
     boolean deleteUserById(Long userId);
 
-    AppUser updateUser(UserDto userDto);
+    AppUser updateUser(AppUser appUser);
 }

@@ -1,37 +1,45 @@
 package study.games.flashcard.wars.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
+@Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepo;
+
     @Override
     public AppUser getUserByUsername(String username) {
-        return null;
+        return userRepo.findAppUserByUsername(username);
     }
 
     @Override
     public AppUser getUserByEmail(String email) {
-        return null;
+        return userRepo.findAppUserByEmail(email);
     }
 
     @Override
     public AppUser getUserById(Long id) {
-        return null;
+        return userRepo.findById(id).orElse(null);
     }
 
     @Override
-    public AppUser createUser(UserDto userDto) {
-        return null;
+    public AppUser createUser(AppUser appUser) {
+        return userRepo.save(appUser);
     }
 
     @Override
     public boolean deleteUserById(Long userId) {
-        return false;
+        userRepo.deleteById(userId);
+        return true;
     }
 
     @Override
-    public AppUser updateUser(UserDto userDto) {
-        return null;
+    public AppUser updateUser(AppUser appUser) {
+        return userRepo.save(appUser);
     }
 }
