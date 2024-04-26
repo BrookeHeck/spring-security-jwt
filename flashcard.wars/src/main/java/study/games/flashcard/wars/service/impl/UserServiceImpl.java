@@ -1,6 +1,7 @@
 package study.games.flashcard.wars.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.repository.UserRepository;
@@ -13,7 +14,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser getUserByUsername(String username) {
-        return userRepo.findAppUserByUsername(username);
+        return userRepo.findAppUserByUsername(username).orElseThrow(() -> new
+                UsernameNotFoundException("User not found " + username));
     }
 
     @Override

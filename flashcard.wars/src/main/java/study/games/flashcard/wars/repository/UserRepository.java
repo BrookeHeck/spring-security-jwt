@@ -3,8 +3,10 @@ package study.games.flashcard.wars.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import study.games.flashcard.wars.models.entities.AppUser;
 
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<AppUser, Long> {
-    AppUser findAppUserByUsername(String username);
+    Optional<AppUser> findAppUserByUsername(String username);
 
     AppUser findAppUserByEmail(String email);
 }
