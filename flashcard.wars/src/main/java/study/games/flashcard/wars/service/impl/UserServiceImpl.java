@@ -1,6 +1,7 @@
 package study.games.flashcard.wars.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.auth.UserPrinciple;
@@ -16,15 +17,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
 
     @Override
-    public AppUser getUserByUsername(String username) {
+    public UserDetails getUserByUsername(String username) {
         AppUser user = userRepo.findAppUserByUsername(username);
         if(user == null) {
             throw new UsernameNotFoundException("user not found: " + username);
         }
         user.setLastLoginDate(user.getLastLoginDate());
         user.setLastLoginDate(LocalDate.now());
-        updateUser(user);
-        return user;
+        return new UserPrinciple(updateUser(user));
     }
 
     @Override

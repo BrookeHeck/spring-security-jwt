@@ -1,6 +1,6 @@
 package study.games.flashcard.wars.auth;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
@@ -9,7 +9,7 @@ import study.games.flashcard.wars.models.entities.AppUser;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserPrinciple implements UserDetails {
     private AppUser appUser;
 
