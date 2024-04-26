@@ -76,7 +76,7 @@ public class JwtService {
         return userPassAuthToken;
     }
 
-    private boolean isTokenValid(String username, String token) {
+    public boolean isTokenValid(String username, String token) {
         JWTVerifier verifier = getJwtVerifier();
         return StringUtils.isNotEmpty(username) && !isTokenExpired(verifier, token);
     }
