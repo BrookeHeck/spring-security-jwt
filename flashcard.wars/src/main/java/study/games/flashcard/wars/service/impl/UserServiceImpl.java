@@ -1,19 +1,32 @@
 package study.games.flashcard.wars.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
+import java.time.LocalDate;
+
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
 
     @Override
-    public AppUser getUserByUsername(String username) {
-        return userRepo.findAppUserByUsername(username);
+    public UserDetails getUserByUsername(String username) {
+        AppUser user = userRepo.findAppUserByUsername(username);
+        if(user == null) {
+            throw new UsernameNotFoundException("user not found: " + username);
+        }
+        user.setLastLoginDate(user.getLastLoginDate());
+        user.setLastLoginDate(LocalDate.now());
+        return new UserPrinciple(updateUser(user));
     }
 
     @Override

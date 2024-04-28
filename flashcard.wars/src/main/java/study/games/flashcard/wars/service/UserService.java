@@ -1,9 +1,10 @@
 package study.games.flashcard.wars.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import study.games.flashcard.wars.models.entities.AppUser;
 
 public interface UserService {
-    AppUser getUserByUsername(String username);
+    UserDetails getUserByUsername(String username);
 
     AppUser getUserByEmail(String email);
 
