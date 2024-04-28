@@ -27,7 +27,7 @@ import java.util.List;
 public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthorizationFilter authorizationFilter;
-//    private final ForbiddenEntryPoint forbiddenEntryPoint;
+    private final ForbiddenEntryPoint forbiddenEntryPoint;
     private final JwtAccessDeniedHandler accessDeniedHandler;
 
     @Bean
@@ -46,7 +46,11 @@ public class SecurityConfiguration {
                 })
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandler))
+                .exceptionHandling(exception ->
+                        exception
+                                .accessDeniedHandler(accessDeniedHandler)
+                                .authenticationEntryPoint(forbiddenEntryPoint)
+                )
                 .httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }
