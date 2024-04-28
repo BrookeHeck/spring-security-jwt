@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -16,6 +15,7 @@ import study.games.flashcard.wars.models.dtos.Response;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @ControllerAdvice
 public class ExceptionHandling extends ResponseEntityExceptionHandler {
@@ -54,12 +54,18 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EmailExistsException.class)
     public ResponseEntity<Response<String>> emailExistsException() {
-        return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this email");
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this email.");
     }
 
     @ExceptionHandler(UsernameExistsException.class)
     public ResponseEntity<Response<String>> usernameExistsException() {
-        return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this username");
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this username.");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Response<String>> usernameExistsException(Exception e) {
+        logger.error("Error", e);
+        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "There was error processing your request.");
     }
 
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
