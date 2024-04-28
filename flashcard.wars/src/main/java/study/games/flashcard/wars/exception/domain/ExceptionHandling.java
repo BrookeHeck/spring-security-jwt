@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,7 +39,11 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
         return createHttpResponse(HttpStatus.FORBIDDEN, "You do not have access to this content");
     }
 
-    
+    @ExceptionHandler(LockedException.class)
+    public ResponseEntity<Response<String>> lockedException() {
+        logger.error("User with locked account attempted to login");
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your account is locked. Please reset password to continue")
+    }
 
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
         Response<String> response = Response.<String>builder()
