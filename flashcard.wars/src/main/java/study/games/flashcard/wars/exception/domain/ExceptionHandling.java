@@ -57,7 +57,10 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
         return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this email");
     }
 
-    
+    @ExceptionHandler(UsernameExistsException.class)
+    public ResponseEntity<Response<String>> usernameExistsException() {
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this username");
+    }
 
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
         Response<String> response = Response.<String>builder()
