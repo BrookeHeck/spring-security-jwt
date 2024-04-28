@@ -1,5 +1,6 @@
 package study.games.flashcard.wars.exception.domain;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -42,9 +43,14 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<Response<String>> lockedException() {
         logger.error("User with locked account attempted to login");
-        return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your account is locked. Please reset password to continue")
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your account is locked. Please reset password to continue.");
     }
 
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<Response<String>> tokenExpiredException() {
+        logger.error("User with expired token attempted to access");
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your token is expired. Please login to continue.");
+    }
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
         Response<String> response = Response.<String>builder()
                 .timeStamp(LocalDateTime.now())
