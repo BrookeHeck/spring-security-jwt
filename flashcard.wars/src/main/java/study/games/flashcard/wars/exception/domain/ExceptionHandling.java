@@ -1,6 +1,7 @@
 package study.games.flashcard.wars.exception.domain;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import jakarta.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -63,10 +64,18 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Response<String>> usernameExistsException(Exception e) {
-        logger.error("Error", e);
+    public ResponseEntity<Response<String>> internalServerError(Exception e) {
+        logger.error("Internal Server Error", e);
         return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "There was error processing your request.");
     }
+
+    @ExceptionHandler(NoResultException.class)
+    public ResponseEntity<Response<String>> noResultException(NoResultException e) {
+        logger.error("No Result Exception", e);
+        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "There was error processing your request.");
+    }
+
+
 
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
         Response<String> response = Response.<String>builder()
