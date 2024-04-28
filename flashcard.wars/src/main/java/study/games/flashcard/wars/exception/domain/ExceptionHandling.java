@@ -51,6 +51,14 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
         logger.error("User with expired token attempted to access");
         return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your token is expired. Please login to continue.");
     }
+
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<Response<String>> emailExistsException() {
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this email");
+    }
+
+    
+
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
         Response<String> response = Response.<String>builder()
                 .timeStamp(LocalDateTime.now())
