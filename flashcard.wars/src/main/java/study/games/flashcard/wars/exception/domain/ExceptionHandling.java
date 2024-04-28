@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import study.games.flashcard.wars.models.dtos.Response;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -72,9 +73,14 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoResultException.class)
     public ResponseEntity<Response<String>> noResultException(NoResultException e) {
         logger.error("No Result Exception", e);
-        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "There was error processing your request.");
+        return createHttpResponse(HttpStatus.NOT_FOUND, "There was error processing your request.");
     }
 
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<Response<String>> ioException(IOException e) {
+        logger.error("IO Exception", e);
+        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "There was error processing your request.");
+    }
 
 
     private ResponseEntity<Response<String>> createHttpResponse(HttpStatus status, String message) {
