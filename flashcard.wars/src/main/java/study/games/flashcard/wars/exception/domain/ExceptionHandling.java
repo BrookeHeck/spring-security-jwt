@@ -17,7 +17,6 @@ import study.games.flashcard.wars.models.dtos.Response;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @ControllerAdvice
 public class ExceptionHandling extends ResponseEntityExceptionHandler {
