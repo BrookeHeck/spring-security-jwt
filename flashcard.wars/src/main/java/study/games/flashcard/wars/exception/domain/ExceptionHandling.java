@@ -38,7 +38,7 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Response<String>> accessDeniedException() {
         logger.error("User attempted to access unauthorized content");
-        return createHttpResponse(HttpStatus.FORBIDDEN, "You do not have access to this content");
+        return createHttpResponse(HttpStatus.FORBIDDEN, "You do not have access to this content.");
     }
 
     @ExceptionHandler(LockedException.class)
@@ -50,7 +50,7 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<Response<String>> tokenExpiredException() {
         logger.error("User with expired token attempted to access");
-        return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your token is expired. Please login to continue.");
+        return createHttpResponse(HttpStatus.UNAUTHORIZED, "Your session has expired. Please login to continue.");
     }
 
     @ExceptionHandler(EmailExistsException.class)
