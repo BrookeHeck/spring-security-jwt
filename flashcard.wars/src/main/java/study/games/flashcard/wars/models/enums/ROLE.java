@@ -4,5 +4,6 @@ public enum ROLE {
     STUDENT,
     TEACHER,
     ADMIN,
+    TEACHER_ASSISTANT
 
 }
