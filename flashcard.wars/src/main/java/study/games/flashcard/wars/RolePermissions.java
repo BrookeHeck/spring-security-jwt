@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RolePermissions {
-   public static List<PERMISSION> ADMIN_PERMISSIONS = Arrays.stream(PERMISSION.values()).toList();
+   public static final List<PERMISSION> ADMIN_PERMISSIONS = Arrays.stream(PERMISSION.values()).toList();
 
     public static final List<PERMISSION> TEACHER_PERMISSIONS = getTeacherPermissions();
 
