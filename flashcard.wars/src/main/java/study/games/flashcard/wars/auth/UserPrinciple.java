@@ -11,11 +11,12 @@ import study.games.flashcard.wars.models.entities.AppUser;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 public class UserPrinciple implements UserDetails {
     private AppUser appUser;
-    private PERMISSION[] authorities;
+//    private List<PERMISSION> authorities;
 
 
     @Override

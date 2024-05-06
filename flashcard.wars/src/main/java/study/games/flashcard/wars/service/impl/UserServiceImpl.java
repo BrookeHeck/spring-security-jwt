@@ -11,6 +11,7 @@ import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Transactional
@@ -19,10 +20,10 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
 
     @Override
-    public UserDetails getUserByUsername(String username) {
-        AppUser user = userRepo.findAppUserByUsername(username);
+    public UserDetails findByUsernameOrEmail(String usernameOrEmail) {
+        AppUser user = userRepo.findAppUserByUsername(usernameOrEmail);
         if(user == null) {
-            throw new UsernameNotFoundException("user not found: " + username);
+            throw new UsernameNotFoundException("user not found: " + usernameOrEmail);
         }
         user.setLastLoginDate(user.getLastLoginDate());
         user.setLastLoginDate(LocalDate.now());
@@ -30,12 +31,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser getUserByEmail(String email) {
+    public AppUser findUserByUsername(String username) {
+        return userRepo.findAppUserByUsername(username);
+    }
+
+    @Override
+    public AppUser findUserByEmail(String email) {
         return userRepo.findAppUserByEmail(email);
     }
 
     @Override
-    public AppUser getUserById(Long id) {
+    public AppUser findUserById(Long id) {
         return userRepo.findById(id).orElse(null);
     }
 
@@ -54,4 +60,16 @@ public class UserServiceImpl implements UserService {
     public AppUser updateUser(AppUser appUser) {
         return userRepo.save(appUser);
     }
+
+    @Override
+    public AppUser registerUser(String firstName, String lastName, String username, String email) {
+        return null;
+    }
+
+    @Override
+    public List<AppUser> getAllUsers() {
+        return null;
+    }
+
+
 }

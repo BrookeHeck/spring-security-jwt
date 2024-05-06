@@ -20,7 +20,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return userService::getUserByUsername;
+        return userService::findUserByUsername;
     }
 
     @Bean
