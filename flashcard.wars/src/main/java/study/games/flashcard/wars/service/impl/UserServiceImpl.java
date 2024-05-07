@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
         appUser.setLastPasswordUpdate(LocalDate.now());
         appUser.setAuthorities(role.getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImage());
-        return null;
+        return createUser(appUser);
     }
 
     @Override
