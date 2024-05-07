@@ -22,7 +22,7 @@ public interface UserService {
 
     AppUser updateUser(AppUser appUser);
 
-    AppUser registerUser(String firstName, String lastName, String username, String email) throws UsernameExistsException, EmailExistsException;
+    AppUser registerUser(String firstName, String lastName, String username, String email) throws Exception;
 
     List<AppUser> getAllUsers();
 

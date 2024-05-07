@@ -10,6 +10,8 @@ import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.exception.domain.EmailExistsException;
 import study.games.flashcard.wars.exception.domain.UsernameExistsException;
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.models.enums.ROLE;
+import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
@@ -65,14 +67,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser registerUser(String firstName, String lastName, String username, String email)
-            throws UsernameExistsException, EmailExistsException {
+    public AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role)
+            throws Exception {
         if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
             throw new UsernameExistsException(username + " is already being used.");
         if(StringUtils.isBlank(email) || emailAlreadyExists(email))
             throw new EmailExistsException(email + " is already being used.");
-
-
+        if(StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName))
+            throw new Exception("Name cannot be blank on registration.");
+        AppUser appUser = new AppUser();
+        appUser.setLastLoginDate(LocalDate.now());
+        appUser.setUserId(generateUserId());
+        appUser.setEmail(email);
+        appUser.setRole(role);
+        appUser.setStatus(USER_STATUS.ACTIVE);
+        appUser.setPassword(generatePassword());
+        appUser.setUsername(username);
+        appUser.setDateJoined(LocalDate.now());
+        appUser.setLastPasswordUpdate(LocalDate.now());
+        appUser.setAuthorities(role.getPermissions());
+        appUser.setProfileImageUrl(getTemporaryProfileImage());
         return null;
     }
 
@@ -87,6 +101,18 @@ public class UserServiceImpl implements UserService {
 
     private boolean emailAlreadyExists(String email) {
         return findUserByEmail(email) != null;
+    }
+
+    private String generateUserId() {
+        return null;
+    }
+
+    private String generatePassword() {
+        return "";
+    }
+
+    private String getTemporaryProfileImage() {
+        return null;
     }
 
 
