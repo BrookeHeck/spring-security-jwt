@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.auth.UserPrinciple;
+import study.games.flashcard.wars.exception.domain.EmailExistsException;
+import study.games.flashcard.wars.exception.domain.UsernameExistsException;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
@@ -63,7 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser registerUser(String firstName, String lastName, String username, String email) {
+    public AppUser registerUser(String firstName, String lastName, String username, String email)
+            throws UsernameExistsException, EmailExistsException {
+        if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
+            throw new UsernameExistsException(username + " is already being used.");
+        if(StringUtils.isBlank(email) || emailAlreadyExists(email))
+            throw new EmailExistsException(email + " is already being used.");
+
+
         return null;
     }
 
@@ -72,10 +81,12 @@ public class UserServiceImpl implements UserService {
         return userRepo.findAll();
     }
 
-    private void validateNewUsernameAndEmail(String username, String email) {
-        if(StringUtils.isNotBlank(username)) {
-            
-        }
+    private boolean userNameAlreadyExists(String userName) {
+        return findUserByUsername(userName) != null;
+    }
+
+    private boolean emailAlreadyExists(String email) {
+        return findUserByEmail(email) != null;
     }
 
 
