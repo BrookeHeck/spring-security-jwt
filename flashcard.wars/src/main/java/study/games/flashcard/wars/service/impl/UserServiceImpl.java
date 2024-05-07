@@ -2,6 +2,7 @@ package study.games.flashcard.wars.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AppUser> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    private void validateNewUsernameAndEmail(String username, String email) {
+        if(StringUtils.isNotBlank(username)) {
+            
+        }
     }
 
 

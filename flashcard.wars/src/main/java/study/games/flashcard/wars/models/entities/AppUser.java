@@ -7,17 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.userdetails.UserDetails;
+import study.games.flashcard.wars.models.enums.PERMISSION;
 import study.games.flashcard.wars.models.enums.ROLE;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@NamedQuery(name = "AppUser.findAppUserByUsernameOrEmail",
+        query = "select e from AppUser e where e.username = :USERNAME_EMAIL or e.username = :USERNAME_EMAIL")
 public class AppUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,4 +39,5 @@ public class AppUser implements Serializable {
     private LocalDate dateJoined;
     private ROLE role;
     private USER_STATUS status;
+    private List<PERMISSION> authorities;
 }
