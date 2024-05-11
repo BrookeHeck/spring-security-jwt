@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role)
+    public AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role, String password)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
         if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
             throw new UsernameExistsException(username + " is already being used.");
@@ -86,7 +85,7 @@ public class UserServiceImpl implements UserService {
         appUser.setEmail(email);
         appUser.setRole(role);
         appUser.setStatus(USER_STATUS.ACTIVE);
-        appUser.setPassword(generatePassword());
+        appUser.setPassword(generatePassword(password));
         appUser.setUsername(username);
         appUser.setDateJoined(LocalDate.now());
         appUser.setLastPasswordUpdate(LocalDate.now());

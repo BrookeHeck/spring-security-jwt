@@ -1,8 +1,6 @@
 package study.games.flashcard.wars.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import study.games.flashcard.wars.exception.domain.EmailExistsException;
-import study.games.flashcard.wars.exception.domain.UsernameExistsException;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.models.enums.ROLE;
 
@@ -23,7 +21,7 @@ public interface UserService {
 
     AppUser updateUser(AppUser appUser);
 
-    AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role) throws Exception;
+    AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role, String password) throws Exception;
 
     List<AppUser> getAllUsers();
 
