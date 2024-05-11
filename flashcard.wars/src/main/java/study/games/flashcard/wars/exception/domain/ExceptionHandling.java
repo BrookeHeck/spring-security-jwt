@@ -55,11 +55,13 @@ public class ExceptionHandling extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EmailExistsException.class)
     public ResponseEntity<Response<String>> emailExistsException() {
+        logger.warn("User attempted to register with email that is already in use");
         return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this email.");
     }
 
     @ExceptionHandler(UsernameExistsException.class)
     public ResponseEntity<Response<String>> usernameExistsException() {
+        logger.warn("User attempted to register with username that already exists");
         return createHttpResponse(HttpStatus.UNAUTHORIZED, "An account already exists with this username.");
     }
 
