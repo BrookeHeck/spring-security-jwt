@@ -1,10 +1,13 @@
 package study.games.flashcard.wars.resource;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import study.games.flashcard.wars.models.dtos.Response;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.service.UserService;
+
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,10 +21,16 @@ public class UserResource {
     }
 
     @PostMapping(value = "register")
-    public UserDto register(@RequestBody UserDto userDto) throws Exception {
+    public Response<UserDto> register(@RequestBody UserDto userDto) throws Exception {
         UserDto registeredDto = userService.registerUser(userDto);
         registeredDto.setPassword(null);
-        return registeredDto;
+        return Response.<UserDto>builder()
+                .timeStamp(LocalDateTime.now())
+                .httpStatusCode(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .data(userDto)
+                .message("registration successful")
+                .build();
     }
 
     @GetMapping(value = "reset-password/{email}")
