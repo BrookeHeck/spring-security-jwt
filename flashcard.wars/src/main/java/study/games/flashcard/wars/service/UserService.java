@@ -3,12 +3,10 @@ package study.games.flashcard.wars.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
-import study.games.flashcard.wars.models.enums.ROLE;
 
 import java.util.List;
 
 public interface UserService {
-    UserDetails findByUsernameOrEmail(String usernameOrEmail);
 
     AppUser findUserByUsername(String username);
 
@@ -22,7 +20,7 @@ public interface UserService {
 
     AppUser updateUser(AppUser appUser);
 
-    UserDto registerUser(UserDto userDto) throws Exception;
+    AppUser registerUser(UserDto userDto) throws Exception;
 
     List<AppUser> getAllUsers();
 

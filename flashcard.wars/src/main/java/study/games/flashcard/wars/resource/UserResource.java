@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import study.games.flashcard.wars.models.dtos.Response;
 import study.games.flashcard.wars.models.dtos.UserDto;
+import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.service.UserService;
 
 import java.time.LocalDateTime;
@@ -21,14 +22,14 @@ public class UserResource {
     }
 
     @PostMapping(value = "register")
-    public Response<UserDto> register(@RequestBody UserDto userDto) throws Exception {
-        UserDto registeredDto = userService.registerUser(userDto);
-        registeredDto.setPassword(null);
-        return Response.<UserDto>builder()
+    public Response<AppUser> register(@RequestBody UserDto userDto) throws Exception {
+        AppUser registeredDto = userService.registerUser(userDto);
+//        registeredDto.setPassword(null);
+        return Response.<AppUser>builder()
                 .timeStamp(LocalDateTime.now())
                 .httpStatusCode(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
-                .data(userDto)
+                .data(registeredDto)
                 .message("registration successful")
                 .build();
     }

@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +13,6 @@ import study.games.flashcard.wars.exception.domain.EmailExistsException;
 import study.games.flashcard.wars.exception.domain.UsernameExistsException;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
-import study.games.flashcard.wars.models.enums.ROLE;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
@@ -28,18 +26,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
-
-    @Override
-    public UserDetails findByUsernameOrEmail(String usernameOrEmail) {
-        AppUser user = userRepo.findAppUserByUsername(usernameOrEmail);
-        if(user == null) {
-            throw new UsernameNotFoundException("user not found: " + usernameOrEmail);
-        }
-        user.setLastLoginDate(user.getLastLoginDate());
-        user.setLastLoginDate(LocalDate.now());
-        return new UserPrinciple(updateUser(user));
-    }
 
     @Override
     public AppUser findUserByUsername(String username) {
@@ -73,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto registerUser(UserDto userDto)
+    public AppUser registerUser(UserDto userDto)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
         if(StringUtils.isBlank(userDto.getUsername()) || userNameAlreadyExists(userDto.getUsername()))
             throw new UsernameExistsException(userDto.getUsername() + " is already being used.");
@@ -94,7 +80,7 @@ public class UserServiceImpl implements UserService {
         appUser.setLastPasswordUpdate(LocalDate.now());
         appUser.setAuthorities(userDto.getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImage());
-        return modelMapper.map(createUser(appUser), UserDto.class);
+        return createUser(appUser);
     }
 
     @Override
