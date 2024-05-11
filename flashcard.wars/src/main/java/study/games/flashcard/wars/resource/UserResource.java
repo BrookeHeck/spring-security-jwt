@@ -1,21 +1,37 @@
 package study.games.flashcard.wars.resource;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import study.games.flashcard.wars.models.dtos.Response;
+import study.games.flashcard.wars.models.dtos.UserDto;
+import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.service.UserService;
 
+import java.time.LocalDateTime;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/user")
 public class UserResource {
+    private final UserService userService;
+
     @GetMapping(value = "login")
     public String login() {
         return "LOGIN";
     }
 
-    @GetMapping(value = "register")
-    public String register() {
-        return "REGISTER";
+    @PostMapping(value = "register")
+    public Response<AppUser> register(@RequestBody UserDto userDto) throws Exception {
+        AppUser registeredDto = userService.registerUser(userDto);
+//        registeredDto.setPassword(null);
+        return Response.<AppUser>builder()
+                .timeStamp(LocalDateTime.now())
+                .httpStatusCode(HttpStatus.OK.value())
+                .httpStatus(HttpStatus.OK)
+                .data(registeredDto)
+                .message("registration successful")
+                .build();
     }
 
     @GetMapping(value = "reset-password/{email}")
