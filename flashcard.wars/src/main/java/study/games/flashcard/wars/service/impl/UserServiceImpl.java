@@ -61,10 +61,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public AppUser registerUser(UserDto userDto)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
-        if(StringUtils.isBlank(userDto.getUsername()) || userNameAlreadyExists(userDto.getUsername()))
-            throw new UsernameExistsException(userDto.getUsername() + " is already being used.");
-        if(StringUtils.isBlank(userDto.getEmail()) || emailAlreadyExists(userDto.getEmail()))
-            throw new EmailExistsException(userDto.getEmail() + " is already being used.");
+        String username = userDto.getUsername();
+        if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
+            throw new UsernameExistsException(username + " is already being used.");
+        String email = userDto.getEmail();
+        if(StringUtils.isBlank(email) || emailAlreadyExists(email))
+            throw new EmailExistsException(email + " is already being used.");
         if(StringUtils.isBlank(userDto.getFirstName()) || StringUtils.isBlank(userDto.getFirstName()))
             throw new NullPointerException("Name cannot be blank on registration.");
         if(userDto.getRole() == null) throw new NullPointerException("A role is needed for registration.");
