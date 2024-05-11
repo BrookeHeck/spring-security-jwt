@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Override
     public UserDetails findByUsernameOrEmail(String usernameOrEmail) {
@@ -71,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser registerUser(UserDto userDto, String password)
+    public UserDto registerUser(UserDto userDto)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
         if(StringUtils.isBlank(userDto.getUsername()) || userNameAlreadyExists(userDto.getUsername()))
             throw new UsernameExistsException(userDto.getUsername() + " is already being used.");
@@ -86,13 +88,13 @@ public class UserServiceImpl implements UserService {
         appUser.setEmail(userDto.getEmail());
         appUser.setRole(userDto.getRole());
         appUser.setStatus(USER_STATUS.ACTIVE);
-        appUser.setPassword(generatePassword(password));
+        appUser.setPassword(generatePassword(userDto.getPassword()));
         appUser.setUsername(userDto.getUsername());
         appUser.setDateJoined(LocalDate.now());
         appUser.setLastPasswordUpdate(LocalDate.now());
         appUser.setAuthorities(userDto.getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImage());
-        return createUser(appUser);
+        return modelMapper.map(createUser(appUser), UserDto.class);
     }
 
     @Override

@@ -1,21 +1,27 @@
 package study.games.flashcard.wars.resource;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import study.games.flashcard.wars.models.dtos.UserDto;
+import study.games.flashcard.wars.service.UserService;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/user")
 public class UserResource {
+    private final UserService userService;
+
     @GetMapping(value = "login")
     public String login() {
         return "LOGIN";
     }
 
-    @GetMapping(value = "register")
-    public String register() {
-        return "REGISTER";
+    @PostMapping(value = "register")
+    public UserDto register(@RequestBody UserDto userDto) throws Exception {
+        UserDto registeredDto = userService.registerUser(userDto);
+        registeredDto.setPassword(null);
+        return registeredDto;
     }
 
     @GetMapping(value = "reset-password/{email}")

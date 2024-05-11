@@ -22,7 +22,7 @@ public interface UserService {
 
     AppUser updateUser(AppUser appUser);
 
-    AppUser registerUser(UserDto userDto, String password) throws Exception;
+    UserDto registerUser(UserDto userDto) throws Exception;
 
     List<AppUser> getAllUsers();
 
