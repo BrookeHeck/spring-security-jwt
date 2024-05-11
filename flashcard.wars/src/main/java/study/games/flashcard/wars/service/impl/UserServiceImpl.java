@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.exception.domain.EmailExistsException;
 import study.games.flashcard.wars.exception.domain.UsernameExistsException;
+import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.models.enums.ROLE;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
@@ -70,26 +71,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role, String password)
+    public AppUser registerUser(UserDto userDto, String password)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
-        if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
-            throw new UsernameExistsException(username + " is already being used.");
-        if(StringUtils.isBlank(email) || emailAlreadyExists(email))
-            throw new EmailExistsException(email + " is already being used.");
-        if(StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName))
+        if(StringUtils.isBlank(userDto.getUsername()) || userNameAlreadyExists(userDto.getUsername()))
+            throw new UsernameExistsException(userDto.getUsername() + " is already being used.");
+        if(StringUtils.isBlank(userDto.getEmail()) || emailAlreadyExists(userDto.getEmail()))
+            throw new EmailExistsException(userDto.getEmail() + " is already being used.");
+        if(StringUtils.isBlank(userDto.getFirstName()) || StringUtils.isBlank(userDto.getFirstName()))
             throw new NullPointerException("Name cannot be blank on registration.");
-        if(role == null) throw new NullPointerException("A role is needed for registration.");
+        if(userDto.getRole() == null) throw new NullPointerException("A role is needed for registration.");
         AppUser appUser = new AppUser();
         appUser.setLastLoginDate(LocalDate.now());
         appUser.setUserId(generateUserId());
-        appUser.setEmail(email);
-        appUser.setRole(role);
+        appUser.setEmail(userDto.getEmail());
+        appUser.setRole(userDto.getRole());
         appUser.setStatus(USER_STATUS.ACTIVE);
         appUser.setPassword(generatePassword(password));
-        appUser.setUsername(username);
+        appUser.setUsername(userDto.getUsername());
         appUser.setDateJoined(LocalDate.now());
         appUser.setLastPasswordUpdate(LocalDate.now());
-        appUser.setAuthorities(role.getPermissions());
+        appUser.setAuthorities(userDto.getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImage());
         return createUser(appUser);
     }
