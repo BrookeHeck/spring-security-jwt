@@ -68,18 +68,7 @@ public class UserServiceImpl implements UserService {
         if(StringUtils.isBlank(userDto.getFirstName()) || StringUtils.isBlank(userDto.getFirstName()))
             throw new NullPointerException("Name cannot be blank on registration.");
         if(userDto.getRole() == null) throw new NullPointerException("A role is needed for registration.");
-        AppUser appUser = new AppUser();
-        appUser.setLastLoginDate(LocalDate.now());
-        appUser.setUserId(generateUserId());
-        appUser.setEmail(userDto.getEmail());
-        appUser.setRole(userDto.getRole());
-        appUser.setStatus(USER_STATUS.ACTIVE);
-        appUser.setPassword(generatePassword(userDto.getPassword()));
-        appUser.setUsername(userDto.getUsername());
-        appUser.setDateJoined(LocalDate.now());
-        appUser.setLastPasswordUpdate(LocalDate.now());
-        appUser.setAuthorities(userDto.getRole().getPermissions());
-        appUser.setProfileImageUrl(getTemporaryProfileImage());
+        AppUser appUser = createNewAppUser(userDto);
         return createUser(appUser);
     }
 
@@ -107,6 +96,24 @@ public class UserServiceImpl implements UserService {
     private String getTemporaryProfileImage() {
         return "https://placehold.co/100x100";
 //        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/image/profile/temp").toString;
+    }
+
+    private AppUser createNewAppUser(UserDto userDto) {
+        AppUser appUser = new AppUser();
+        appUser.setLastLoginDate(LocalDate.now());
+        appUser.setUserId(generateUserId());
+        appUser.setEmail(userDto.getEmail());
+        appUser.setRole(userDto.getRole());
+        appUser.setStatus(USER_STATUS.ACTIVE);
+        appUser.setPassword(generatePassword(userDto.getPassword()));
+        appUser.setUsername(userDto.getUsername());
+        appUser.setDateJoined(LocalDate.now());
+        appUser.setLastPasswordUpdate(LocalDate.now());
+        appUser.setAuthorities(userDto.getRole().getPermissions());
+        appUser.setProfileImageUrl(getTemporaryProfileImage());
+        appUser.setFirstName(userDto.getFirstName());
+        appUser.setLastName(userDto.getLastName());
+        return appUser;
     }
 
 
