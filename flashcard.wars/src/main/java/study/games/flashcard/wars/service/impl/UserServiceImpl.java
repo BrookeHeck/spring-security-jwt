@@ -2,9 +2,12 @@ package study.games.flashcard.wars.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.exception.domain.EmailExistsException;
@@ -23,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails findByUsernameOrEmail(String usernameOrEmail) {
@@ -68,13 +72,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser registerUser(String firstName, String lastName, String username, String email, ROLE role)
-            throws Exception {
+            throws UsernameExistsException, EmailExistsException, NullPointerException {
         if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
             throw new UsernameExistsException(username + " is already being used.");
         if(StringUtils.isBlank(email) || emailAlreadyExists(email))
             throw new EmailExistsException(email + " is already being used.");
         if(StringUtils.isBlank(firstName) || StringUtils.isBlank(lastName))
-            throw new Exception("Name cannot be blank on registration.");
+            throw new NullPointerException("Name cannot be blank on registration.");
+        if(role == null) throw new NullPointerException("A role is needed for registration.");
         AppUser appUser = new AppUser();
         appUser.setLastLoginDate(LocalDate.now());
         appUser.setUserId(generateUserId());
@@ -104,15 +109,16 @@ public class UserServiceImpl implements UserService {
     }
 
     private String generateUserId() {
-        return null;
+        return RandomStringUtils.randomAlphanumeric(10);
     }
 
-    private String generatePassword() {
-        return "";
+    private String generatePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 
     private String getTemporaryProfileImage() {
-        return null;
+        return "https://placehold.co/100x100";
+//        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/image/profile/temp").toString;
     }
 
 
