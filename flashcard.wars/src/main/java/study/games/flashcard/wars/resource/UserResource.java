@@ -3,6 +3,7 @@ package study.games.flashcard.wars.resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import study.games.flashcard.wars.auth.AuthenticationService;
 import study.games.flashcard.wars.models.dtos.Response;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
@@ -14,16 +15,17 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping(value = "/user")
 public class UserResource {
-    private final UserService userService;
+    private final AuthenticationService authService;
 
     @GetMapping(value = "login")
-    public String login() {
-        return "LOGIN";
+    public Response<AppUser> login() {
+
+        return null;
     }
 
     @PostMapping(value = "register")
     public Response<AppUser> register(@RequestBody UserDto userDto) throws Exception {
-        AppUser registeredDto = userService.registerUser(userDto);
+        AppUser registeredDto = authService.registerUser(userDto);
 //        registeredDto.setPassword(null);
         return Response.<AppUser>builder()
                 .timeStamp(LocalDateTime.now())
