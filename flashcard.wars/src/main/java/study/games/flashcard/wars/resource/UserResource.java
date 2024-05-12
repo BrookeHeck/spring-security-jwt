@@ -1,6 +1,7 @@
 package study.games.flashcard.wars.resource;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import study.games.flashcard.wars.auth.AuthenticationService;
@@ -18,7 +19,8 @@ public class UserResource {
     private final AuthenticationService authService;
 
     @GetMapping(value = "login")
-    public Response<AppUser> login() {
+    public Response<AppUser> login(@RequestHeader(HttpHeaders.AUTHORIZATION) String basicAuthHeader) {
+        AppUser user = authService.login(basicAuthHeader);
 
         return null;
     }
