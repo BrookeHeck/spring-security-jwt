@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.exception.domain.EmailExistsException;
@@ -14,6 +16,7 @@ import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,23 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    public AppUser login(String authenticationHeader) {
+        String decodedAuthentication = new String(Base64.getDecoder().decode(authenticationHeader));
+        String[] usernameAndPassword = decodedAuthentication.split(":");
+        String username = usernameAndPassword[0];
+        String password = usernameAndPassword[1];
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        AppUser user = userRepository.findAppUserByUsernameOrEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        user.setLastLoginDate(LocalDate.now());
+        return user;
+    }
+
+    public String generateJwtToken(AppUser appUser) {
+        UserPrinciple userPrinciple = new UserPrinciple(appUser);
+        return jwtService.generateJwt(userPrinciple);
+    }
 
     public AppUser registerUser(UserDto userDto)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
