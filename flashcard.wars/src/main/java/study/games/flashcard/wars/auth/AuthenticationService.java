@@ -27,7 +27,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AppUser login(String authenticationHeader) {
-        String[] usernameAndPassword = getUsernameAndPaswordFromBasicAuthHeader(authenticationHeader).split(":");
+        String[] usernameAndPassword =  new String(Base64.getDecoder().decode(authenticationHeader)).split(":");
         String username = usernameAndPassword[0];
         String password = usernameAndPassword[1];
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -94,10 +94,5 @@ public class AuthenticationService {
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());
         return appUser;
-    }
-
-    private String getUsernameAndPaswordFromBasicAuthHeader(String basicAuthHeader) {
-        String decodedAuthentication = new String(Base64.getDecoder().decode(basicAuthHeader));
-        return decodedAuthentication.split("Basic ")[1];
     }
 }

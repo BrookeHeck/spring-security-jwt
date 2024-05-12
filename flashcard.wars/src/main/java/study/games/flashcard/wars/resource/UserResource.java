@@ -23,7 +23,7 @@ public class UserResource {
 
     @GetMapping(value = "login")
     public ResponseEntity<AppUser> login(@RequestHeader(AUTHORIZATION) String basicAuthHeader) {
-        AppUser user = authService.login(basicAuthHeader);
+        AppUser user = authService.login(basicAuthHeader.split("Basic ")[1]);
         String jwt = authService.generateJwtToken(user);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWT_HEADER, jwt);
