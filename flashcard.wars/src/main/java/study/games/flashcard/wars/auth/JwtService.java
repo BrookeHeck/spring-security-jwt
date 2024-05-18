@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+import study.games.flashcard.wars.models.enums.PERMISSION;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,24 +28,24 @@ public class JwtService {
     private String secret;
 
     public String generateJwt(UserPrinciple userPrinciple) {
-        List<String> claims = getClaimsFromUserPrinciple(userPrinciple);
+        String[] claims = getClaimsFromUserPrinciple(userPrinciple);
         Date now = new Date();
         return JWT.create()
                 .withIssuer(JWT_ISSUER)
                 .withAudience(JWT_AUDIENCE)
                 .withIssuedAt(now)
                 .withSubject(userPrinciple.getUsername())
-                .withArrayClaim(AUTHORITIES, claims.toArray(new String[0]))
+                .withArrayClaim(AUTHORITIES, claims)
                 .withExpiresAt(new Date(now.getTime() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(secret.getBytes()));
     }
 
-    private List<String> getClaimsFromUserPrinciple(UserPrinciple userPrinciple) {
+    private String[] getClaimsFromUserPrinciple(UserPrinciple userPrinciple) {
         List<String> authorities = new ArrayList<>();
         for(GrantedAuthority grantedAuthority : userPrinciple.getAuthorities()) {
             authorities.add(grantedAuthority.getAuthority());
         }
-        return authorities;
+        return authorities.toArray(new String[0]);
     }
 
     public List<GrantedAuthority> getAuthorities(String jwt) {
