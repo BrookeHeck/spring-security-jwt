@@ -22,6 +22,8 @@ import java.util.List;
 @Entity
 @NamedQuery(name = "AppUser.findAppUserByUsernameOrEmail",
         query = "select e from AppUser e where e.username = :USERNAME_EMAIL or e.username = :USERNAME_EMAIL")
+@NamedQuery(name = "AppUser.updateUserStatus", query = "update AppUser user set user.status = :STATUS where user.id = :ID")
+@NamedQuery(name = "AppUser.setLastLoginDate", query = "update AppUser user set user.lastLoginDate = :LOGIN_DATE where user.id = :ID")
 public class AppUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

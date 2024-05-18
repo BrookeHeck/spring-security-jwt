@@ -18,6 +18,7 @@ public class AuthenticationSuccessListener {
         if(principle instanceof AppUser user) {
             loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
             loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
+            // TODO: update the last login date on successful login
         }
     }
 }

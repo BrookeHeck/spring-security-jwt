@@ -1,6 +1,7 @@
 package study.games.flashcard.wars.service;
 
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.models.enums.USER_STATUS;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public interface UserService {
     AppUser updateUser(AppUser appUser);
 
     List<AppUser> getAllUsers();
+
+    boolean changeAccountStatus(USER_STATUS userStatus, long userId);
+
+    void updateUserLastLoginToNow(long userId);
 
 
 }
