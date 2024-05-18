@@ -17,8 +17,6 @@ import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.repository.UserRepository;
 
-import java.time.LocalDate;
-
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
@@ -31,8 +29,7 @@ public class ApplicationConfig {
             if(user == null) {
                 throw new UsernameNotFoundException("user not found: " + username);
             }
-            user.setLastLoginDate(LocalDate.now());
-            return new UserPrinciple(userRepo.save(user));
+            return new UserPrinciple(user);
         };
     }
 

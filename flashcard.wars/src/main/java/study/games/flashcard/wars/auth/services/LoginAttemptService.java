@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.springframework.stereotype.Service;
+import study.games.flashcard.wars.exception.domain.AccountNotActiveException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -31,12 +32,16 @@ public class LoginAttemptService {
         loginAttemptCache.invalidate(usernameOrEmail);
     }
 
-    public void addUserToLoginAttemptCache(String usernameOrEmail) throws ExecutionException {
+    public void addUserToLoginAttemptCache(String usernameOrEmail) throws ExecutionException, AccountNotActiveException {
         int attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(usernameOrEmail);
-        loginAttemptCache.put(usernameOrEmail, attempts);
+        if(hasExceededMaxAttempts(attempts)) {
+            throw new AccountNotActiveException("account with username or email" + usernameOrEmail + " has exceeded login attempts.");
+        } else {
+            loginAttemptCache.put(usernameOrEmail, attempts);
+        }
     }
 
-    public boolean hasExceededMaxAttempts(int attempts) throws ExecutionException {
+    private boolean hasExceededMaxAttempts(int attempts) {
         return attempts >= MAX_NUMBER_LOGIN_ATTEMPTS;
     }
 }

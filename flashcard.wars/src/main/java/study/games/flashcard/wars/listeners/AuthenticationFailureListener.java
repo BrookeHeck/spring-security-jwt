@@ -5,6 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.stereotype.Component;
 import study.games.flashcard.wars.auth.services.LoginAttemptService;
+import study.games.flashcard.wars.exception.domain.AccountNotActiveException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -17,7 +18,11 @@ public class AuthenticationFailureListener {
     public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent badCredentialsEvent) throws ExecutionException {
         Object principal = badCredentialsEvent.getAuthentication().getPrincipal();
         if(principal instanceof String username) {
-            loginAttemptService.addUserToLoginAttemptCache(username);
+            try {
+                loginAttemptService.addUserToLoginAttemptCache(username);
+            } catch (AccountNotActiveException e) {
+                // TODO: set account to inactive, inform user
+            }
         }
     }
 }
