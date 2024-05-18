@@ -26,5 +26,7 @@ public class LoginAttemptService {
                 });
     }
 
-
+    public void evictUserFromLoginAttemptCache(String usernameOrEmail) {
+        loginAttemptCache.invalidate(usernameOrEmail);
+    }
 }
