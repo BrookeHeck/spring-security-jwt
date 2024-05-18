@@ -3,6 +3,7 @@ package study.games.flashcard.wars.auth;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,8 @@ import study.games.flashcard.wars.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.Base64;
+
+import static study.games.flashcard.wars.auth.SecurityConstants.JWT_HEADER;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +42,14 @@ public class AuthenticationService {
         return user;
     }
 
-    public String generateJwtToken(AppUser appUser) {
+    public HttpHeaders getJwtTokenHeader(AppUser user) {
+        String jwt = generateJwtToken(user);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWT_HEADER, jwt);
+        return httpHeaders;
+    }
+
+    private String generateJwtToken(AppUser appUser) {
         UserPrinciple userPrinciple = new UserPrinciple(appUser);
         return jwtService.generateJwt(userPrinciple);
     }

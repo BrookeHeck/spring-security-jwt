@@ -12,6 +12,7 @@ import study.games.flashcard.wars.models.entities.AppUser;
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static study.games.flashcard.wars.auth.SecurityConstants.JWT_HEADER;
 
@@ -24,23 +25,15 @@ public class UserResource {
     @GetMapping(value = "login")
     public ResponseEntity<AppUser> login(@RequestHeader(AUTHORIZATION) String basicAuthHeader) {
         AppUser user = authService.login(basicAuthHeader.split("Basic ")[1]);
-        String jwt = authService.generateJwtToken(user);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWT_HEADER, jwt);
+        HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
         return new ResponseEntity<>(user, httpHeaders, OK);
     }
 
     @PostMapping(value = "register")
-    public Response<AppUser> register(@RequestBody UserDto userDto) throws Exception {
-        AppUser registeredDto = authService.registerUser(userDto);
-//        registeredDto.setPassword(null);
-        return Response.<AppUser>builder()
-                .timeStamp(LocalDateTime.now())
-                .httpStatusCode(OK.value())
-                .httpStatus(OK)
-                .data(registeredDto)
-                .message("registration successful")
-                .build();
+    public ResponseEntity<AppUser> register(@RequestBody UserDto userDto) throws Exception {
+        AppUser registeredUser = authService.registerUser(userDto);
+        HttpHeaders headers = authService.getJwtTokenHeader(registeredUser);
+        return new ResponseEntity<>(registeredUser, headers, CREATED);
     }
 
     @GetMapping(value = "reset-password/{email}")
