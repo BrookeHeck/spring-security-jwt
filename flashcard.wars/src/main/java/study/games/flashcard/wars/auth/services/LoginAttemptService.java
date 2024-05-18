@@ -3,8 +3,8 @@ package study.games.flashcard.wars.auth.services;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Service;
-import study.games.flashcard.wars.exception.domain.AccountNotActiveException;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -32,10 +32,10 @@ public class LoginAttemptService {
         loginAttemptCache.invalidate(usernameOrEmail);
     }
 
-    public void addUserToLoginAttemptCache(String usernameOrEmail) throws ExecutionException, AccountNotActiveException {
+    public void addUserToLoginAttemptCache(String usernameOrEmail) throws ExecutionException, LockedException {
         int attempts = ATTEMPT_INCREMENT + loginAttemptCache.get(usernameOrEmail);
         if(hasExceededMaxAttempts(attempts)) {
-            throw new AccountNotActiveException("account with username or email" + usernameOrEmail + " has exceeded login attempts.");
+            throw new LockedException("account with username or email" + usernameOrEmail + " has exceeded login attempts.");
         } else {
             loginAttemptCache.put(usernameOrEmail, attempts);
         }

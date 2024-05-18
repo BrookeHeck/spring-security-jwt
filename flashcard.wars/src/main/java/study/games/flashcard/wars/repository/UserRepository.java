@@ -1,7 +1,7 @@
 package study.games.flashcard.wars.repository;
 
-import org.hibernate.annotations.NamedNativeQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
@@ -16,7 +16,9 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     AppUser findAppUserByEmail(String email);
 
+    @Modifying
     int updateUserStatus(@Param("STATUS") USER_STATUS status, @Param("USERNAME_EMAIL") String usernameOrEmail);
 
+    @Modifying
     void setLastLoginDate(@Param("LOGIN_DATE") LocalDate loginDate, long userId);
 }

@@ -21,9 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @NamedQuery(name = "AppUser.findAppUserByUsernameOrEmail",
-        query = "select user from AppUser user where user.username = :USERNAME_EMAIL or user.username = :USERNAME_EMAIL")
+        query = "select user from AppUser user where user.username = :USERNAME_EMAIL or user.email = :USERNAME_EMAIL")
 @NamedQuery(name = "AppUser.updateUserStatus",
-        query = "update AppUser user set user.status = :STATUS where user.username = :USERNAME_EMAIL or user.username = :USERNAME_EMAIL")
+        query = "update AppUser user set user.status = :STATUS where user.username = :USERNAME_EMAIL or user.email = :USERNAME_EMAIL")
 @NamedQuery(name = "AppUser.setLastLoginDate", query = "update AppUser user set user.lastLoginDate = :LOGIN_DATE where user.id = :ID")
 public class AppUser implements Serializable {
     @Id
@@ -42,7 +42,10 @@ public class AppUser implements Serializable {
     private LocalDate lastPasswordUpdate;
     @CreationTimestamp
     private LocalDate dateJoined;
+    @Enumerated(EnumType.STRING)
     private ROLE role;
+    @Enumerated(EnumType.STRING)
     private USER_STATUS status;
+    @Transient
     private List<PERMISSION> authorities;
 }
