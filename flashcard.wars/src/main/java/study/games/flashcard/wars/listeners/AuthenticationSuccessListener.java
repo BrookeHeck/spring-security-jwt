@@ -6,11 +6,13 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.stereotype.Component;
 import study.games.flashcard.wars.auth.services.LoginAttemptService;
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.service.UserService;
 
 @Component
 @RequiredArgsConstructor
 public class AuthenticationSuccessListener {
     private final LoginAttemptService loginAttemptService;
+    private final UserService userService;
 
     @EventListener
     public void onAuthenticationSuccess(AuthenticationSuccessEvent authenticationSuccessEvent) {
@@ -18,7 +20,7 @@ public class AuthenticationSuccessListener {
         if(principle instanceof AppUser user) {
             loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
             loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
-            // TODO: update the last login date on successful login
+            userService.updateUserLastLoginToNow(user.getId());
         }
     }
 }
