@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
+import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.auth.services.LoginAttemptService;
 import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.service.UserService;
@@ -19,7 +20,8 @@ public class AuthenticationSuccessListener {
     @EventListener
     public void onAuthenticationSuccess(AuthenticationSuccessEvent authenticationSuccessEvent) {
         Object principle = authenticationSuccessEvent.getAuthentication().getPrincipal();
-        if(principle instanceof AppUser user) {
+        if(principle instanceof UserPrinciple userPrinciple) {
+            AppUser user = userPrinciple.getAppUser();
             loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
             loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
             userService.updateUserLastLoginToNow(user.getId());

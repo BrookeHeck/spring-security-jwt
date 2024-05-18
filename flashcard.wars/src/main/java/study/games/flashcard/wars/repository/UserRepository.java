@@ -21,5 +21,5 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     void updateUserStatus(@Param("STATUS") USER_STATUS status, @Param("USERNAME_EMAIL") String usernameOrEmail);
 
     @Modifying
-    void setLastLoginDate(@Param("LOGIN_DATE") LocalDateTime loginDate, long userId);
+    void setLastLoginDate(@Param("LOGIN_DATE") LocalDateTime loginDate, @Param("ID") long userId);
 }
