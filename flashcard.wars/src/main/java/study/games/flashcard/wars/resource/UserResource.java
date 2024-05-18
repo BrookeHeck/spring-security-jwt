@@ -4,17 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import study.games.flashcard.wars.auth.AuthenticationService;
-import study.games.flashcard.wars.models.dtos.Response;
+import study.games.flashcard.wars.auth.services.AuthenticationService;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
-
-import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
-import static study.games.flashcard.wars.auth.SecurityConstants.JWT_HEADER;
 
 @RequiredArgsConstructor
 @RestController
