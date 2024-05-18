@@ -13,6 +13,7 @@ import study.games.flashcard.wars.models.enums.USER_STATUS;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -38,10 +39,10 @@ public class AppUser implements Serializable {
     private String firstName;
     private String lastName;
     private String profileImageUrl;
-    private LocalDate lastLoginDate;
-    private LocalDate lastPasswordUpdate;
+    private LocalDateTime lastLoginDate;
+    private LocalDateTime lastPasswordUpdate;
     @CreationTimestamp
-    private LocalDate dateJoined;
+    private LocalDateTime dateJoined;
     @Enumerated(EnumType.STRING)
     private ROLE role;
     @Enumerated(EnumType.STRING)

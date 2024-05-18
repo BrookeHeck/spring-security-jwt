@@ -7,6 +7,7 @@ import study.games.flashcard.wars.models.entities.AppUser;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<AppUser, Long> {
@@ -17,8 +18,8 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     AppUser findAppUserByEmail(String email);
 
     @Modifying
-    int updateUserStatus(@Param("STATUS") USER_STATUS status, @Param("USERNAME_EMAIL") String usernameOrEmail);
+    void updateUserStatus(@Param("STATUS") USER_STATUS status, @Param("USERNAME_EMAIL") String usernameOrEmail);
 
     @Modifying
-    void setLastLoginDate(@Param("LOGIN_DATE") LocalDate loginDate, long userId);
+    void setLastLoginDate(@Param("LOGIN_DATE") LocalDateTime loginDate, long userId);
 }

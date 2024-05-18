@@ -9,6 +9,7 @@ import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -54,14 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeAccountStatus(USER_STATUS userStatus, String usernameOrEmail) {
-        int rows = userRepo.updateUserStatus(userStatus, usernameOrEmail);
-        return rows != 0;
+    public void changeAccountStatus(USER_STATUS userStatus, String usernameOrEmail) {
+        userRepo.updateUserStatus(userStatus, usernameOrEmail);
     }
 
     @Override
     public void updateUserLastLoginToNow(long userId) {
-        userRepo.setLastLoginDate(LocalDate.now(), userId);
+        userRepo.setLastLoginDate(LocalDateTime.now(), userId);
     }
 
 

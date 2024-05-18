@@ -18,6 +18,7 @@ import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 import static study.games.flashcard.wars.auth.SecurityConstants.JWT_HEADER;
@@ -35,11 +36,8 @@ public class AuthenticationService {
         String username = usernameAndPassword[0];
         String password = usernameAndPassword[1];
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        AppUser user = userRepository.findAppUserByUsernameOrEmail(username)
+        return userRepository.findAppUserByUsernameOrEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-        user.setLastLoginDate(LocalDate.now());
-        user.setAuthorities(user.getRole().getPermissions());
-        return user;
     }
 
     public HttpHeaders getJwtTokenHeader(AppUser user) {
@@ -92,15 +90,14 @@ public class AuthenticationService {
 
     private AppUser createNewAppUser(UserDto userDto) {
         AppUser appUser = new AppUser();
-        appUser.setLastLoginDate(LocalDate.now());
+        appUser.setLastLoginDate(LocalDateTime.now());
         appUser.setUserId(generateUserId());
         appUser.setEmail(userDto.getEmail());
         appUser.setRole(userDto.getRole());
         appUser.setStatus(USER_STATUS.ACTIVE);
         appUser.setPassword(generatePassword(userDto.getPassword()));
         appUser.setUsername(userDto.getUsername());
-        appUser.setDateJoined(LocalDate.now());
-        appUser.setLastPasswordUpdate(LocalDate.now());
+        appUser.setLastPasswordUpdate(LocalDateTime.now());
         appUser.setAuthorities(userDto.getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImage());
         appUser.setFirstName(userDto.getFirstName());
