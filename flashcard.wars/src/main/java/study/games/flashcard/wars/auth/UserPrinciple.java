@@ -3,11 +3,13 @@ package study.games.flashcard.wars.auth;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.models.entities.AppUser;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return new ArrayList<SimpleGrantedAuthority>();
     }
 
     @Override

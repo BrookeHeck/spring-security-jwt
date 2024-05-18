@@ -12,6 +12,7 @@ import study.games.flashcard.wars.exception.domain.EmailExistsException;
 import study.games.flashcard.wars.exception.domain.UsernameExistsException;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.models.enums.ROLE;
 import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 
@@ -34,6 +35,7 @@ public class AuthenticationService {
         AppUser user = userRepository.findAppUserByUsernameOrEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
         user.setLastLoginDate(LocalDate.now());
+        user.setAuthorities(user.getRole().getPermissions());
         return user;
     }
 
