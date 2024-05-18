@@ -11,6 +11,7 @@ import study.games.flashcard.wars.models.entities.AppUser;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Getter
@@ -19,7 +20,9 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<SimpleGrantedAuthority>();
+        return appUser.getAuthorities().stream().map(permission ->
+                new SimpleGrantedAuthority(permission.toString()))
+                .collect(Collectors.toList());
     }
 
     @Override
