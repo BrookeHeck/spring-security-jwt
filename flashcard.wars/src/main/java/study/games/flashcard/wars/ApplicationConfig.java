@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 
 @Configuration
@@ -28,6 +30,9 @@ public class ApplicationConfig {
             AppUser user = userRepo.findAppUserByUsername(username);
             if(user == null) {
                 throw new UsernameNotFoundException("user not found: " + username);
+            }
+            if(user.getStatus() != USER_STATUS.ACTIVE) {
+                throw new LockedException("user tried to login with " + user.getStatus() + " status: " + username);
             }
             return new UserPrinciple(user);
         };
