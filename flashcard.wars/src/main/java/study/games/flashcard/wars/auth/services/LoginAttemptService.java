@@ -3,9 +3,7 @@ package study.games.flashcard.wars.auth.services;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.games.flashcard.wars.service.UserService;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;

@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 @Component
 @RequiredArgsConstructor
 public class AuthenticationFailureListener {
-    private LoginAttemptService loginAttemptService;
+    private final LoginAttemptService loginAttemptService;
 
     @EventListener
     public void onAuthenticationFailure(AuthenticationFailureBadCredentialsEvent badCredentialsEvent) throws ExecutionException {
