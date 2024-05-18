@@ -21,7 +21,7 @@ public interface UserService {
 
     List<AppUser> getAllUsers();
 
-    boolean changeAccountStatus(USER_STATUS userStatus, long userId);
+    boolean changeAccountStatus(USER_STATUS userStatus, String usernameOrEmail);
 
     void updateUserLastLoginToNow(long userId);
 

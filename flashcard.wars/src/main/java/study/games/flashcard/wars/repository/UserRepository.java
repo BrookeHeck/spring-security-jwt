@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     AppUser findAppUserByEmail(String email);
 
-    int updateUserStatus(@Param("STATUS") USER_STATUS status, @Param("ID") long userId);
+    int updateUserStatus(@Param("STATUS") USER_STATUS status, @Param("USERNAME_EMAIL") String usernameOrEmail);
 
-    int setLastLoginDate(@Param("LOGIN_DATE") LocalDate loginDate, long userId);
+    void setLastLoginDate(@Param("LOGIN_DATE") LocalDate loginDate, long userId);
 }

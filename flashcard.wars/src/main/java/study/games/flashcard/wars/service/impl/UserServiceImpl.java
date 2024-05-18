@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeAccountStatus(USER_STATUS userStatus, long userId) {
-        int rows = userRepo.updateUserStatus(userStatus, userId);
+    public boolean changeAccountStatus(USER_STATUS userStatus, String usernameOrEmail) {
+        int rows = userRepo.updateUserStatus(userStatus, usernameOrEmail);
         return rows != 0;
     }
 
