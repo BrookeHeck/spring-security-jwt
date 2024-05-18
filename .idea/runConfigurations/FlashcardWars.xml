@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FlashcardWars" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="spring.datasource.username" value="bheck" />
+      <env name="spring.datasource.password" value="Romeo53078" />
+      <env name="spring.security.secret-key" value="secret" />
+    </envs>
+    <module name="flashcard.wars.main" />
+    <target name="@@@LOCAL@@@" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="study.games.flashcard.wars.Application" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

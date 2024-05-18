@@ -20,7 +20,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return appUser.getAuthorities().stream().map(permission ->
+        return appUser.getRole().getPermissions().stream().map(permission ->
                 new SimpleGrantedAuthority(permission.toString()))
                 .collect(Collectors.toList());
     }
