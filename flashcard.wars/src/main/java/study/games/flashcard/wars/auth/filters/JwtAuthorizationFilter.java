@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import study.games.flashcard.wars.auth.JwtService;
+import study.games.flashcard.wars.auth.services.JwtService;
 import study.games.flashcard.wars.auth.SecurityConstants;
 
 import java.io.IOException;

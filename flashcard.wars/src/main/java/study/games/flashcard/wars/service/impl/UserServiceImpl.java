@@ -4,9 +4,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,6 +52,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AppUser> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public void changeAccountStatus(USER_STATUS userStatus, String usernameOrEmail) {
+        userRepo.updateUserStatus(userStatus, usernameOrEmail);
+    }
+
+    @Override
+    public void updateUserLastLoginToNow(long userId) {
+        userRepo.setLastLoginDate(LocalDateTime.now(), userId);
     }
 
 

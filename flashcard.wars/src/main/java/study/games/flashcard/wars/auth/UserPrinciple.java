@@ -9,6 +9,7 @@ import study.games.flashcard.wars.models.enums.USER_STATUS;
 import study.games.flashcard.wars.models.entities.AppUser;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return appUser.getAuthorities().stream().map(permission ->
+        return appUser.getRole().getPermissions().stream().map(permission ->
                 new SimpleGrantedAuthority(permission.toString()))
                 .collect(Collectors.toList());
     }
@@ -37,7 +38,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        LocalDate yearAgo = LocalDate.now().minusYears(1);
+        LocalDateTime yearAgo = LocalDateTime.now().minusYears(1);
         return appUser.getLastLoginDate().isAfter(yearAgo);
     }
 
@@ -48,7 +49,7 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        LocalDate days120Ago = LocalDate.now().minusDays(120);
+        LocalDateTime days120Ago = LocalDateTime.now().minusDays(120);
         return appUser.getLastPasswordUpdate().isAfter(days120Ago);
     }
 
