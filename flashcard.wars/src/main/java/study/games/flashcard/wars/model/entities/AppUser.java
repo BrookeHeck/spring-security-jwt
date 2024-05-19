@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.models.entities;
+package study.games.flashcard.wars.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,9 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import study.games.flashcard.wars.models.enums.PERMISSION;
-import study.games.flashcard.wars.models.enums.ROLE;
-import study.games.flashcard.wars.models.enums.USER_STATUS;
+import study.games.flashcard.wars.model.enums.PERMISSION;
+import study.games.flashcard.wars.model.enums.ROLE;
+import study.games.flashcard.wars.model.enums.USER_STATUS;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

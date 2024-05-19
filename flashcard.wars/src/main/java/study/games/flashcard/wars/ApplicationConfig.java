@@ -15,8 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import study.games.flashcard.wars.auth.UserPrinciple;
-import study.games.flashcard.wars.models.entities.AppUser;
-import study.games.flashcard.wars.models.enums.USER_STATUS;
+import study.games.flashcard.wars.model.entities.AppUser;
+import study.games.flashcard.wars.model.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 
 @Configuration

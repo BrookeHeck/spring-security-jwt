@@ -1,11 +1,11 @@
-package study.games.flashcard.wars.auth.filters;
+package study.games.flashcard.wars.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
-import study.games.flashcard.wars.models.dtos.Response;
+import study.games.flashcard.wars.model.dtos.Response;
 
 import javax.naming.AuthenticationException;
 import java.io.IOException;

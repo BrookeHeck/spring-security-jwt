@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.auth.services;
+package study.games.flashcard.wars.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service;
 import study.games.flashcard.wars.auth.UserPrinciple;
 import study.games.flashcard.wars.exception.domain.EmailExistsException;
 import study.games.flashcard.wars.exception.domain.UsernameExistsException;
-import study.games.flashcard.wars.models.dtos.UserDto;
-import study.games.flashcard.wars.models.entities.AppUser;
-import study.games.flashcard.wars.models.enums.USER_STATUS;
+import study.games.flashcard.wars.model.dtos.UserDto;
+import study.games.flashcard.wars.model.entities.AppUser;
+import study.games.flashcard.wars.model.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
 

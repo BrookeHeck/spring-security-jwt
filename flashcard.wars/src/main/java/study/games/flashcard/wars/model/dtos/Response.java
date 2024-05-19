@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.models.dtos;
+package study.games.flashcard.wars.model.dtos;
 
 import lombok.Builder;
 import lombok.Getter;

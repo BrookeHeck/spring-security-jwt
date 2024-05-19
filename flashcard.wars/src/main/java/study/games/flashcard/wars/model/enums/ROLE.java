@@ -1,6 +1,4 @@
-package study.games.flashcard.wars.models.enums;
-
-import study.games.flashcard.wars.RolePermissions;
+package study.games.flashcard.wars.model.enums;
 
 import java.util.List;
 

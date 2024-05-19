@@ -3,10 +3,9 @@ package study.games.flashcard.wars.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
-import study.games.flashcard.wars.models.entities.AppUser;
-import study.games.flashcard.wars.models.enums.USER_STATUS;
+import study.games.flashcard.wars.model.entities.AppUser;
+import study.games.flashcard.wars.model.enums.USER_STATUS;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 

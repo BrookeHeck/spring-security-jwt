@@ -5,10 +5,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
-import study.games.flashcard.wars.auth.services.AuthenticationService;
-import study.games.flashcard.wars.exception.domain.UsernameExistsException;
-import study.games.flashcard.wars.models.dtos.UserDto;
-import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.auth.service.AuthenticationService;
+import study.games.flashcard.wars.model.dtos.UserDto;
+import study.games.flashcard.wars.model.entities.AppUser;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;

@@ -3,12 +3,11 @@ package study.games.flashcard.wars.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import study.games.flashcard.wars.models.entities.AppUser;
-import study.games.flashcard.wars.models.enums.USER_STATUS;
+import study.games.flashcard.wars.model.entities.AppUser;
+import study.games.flashcard.wars.model.enums.USER_STATUS;
 import study.games.flashcard.wars.repository.UserRepository;
 import study.games.flashcard.wars.service.UserService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

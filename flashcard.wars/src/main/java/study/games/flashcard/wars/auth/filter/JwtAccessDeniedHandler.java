@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.auth.filters;
+package study.games.flashcard.wars.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import study.games.flashcard.wars.models.dtos.Response;
+import study.games.flashcard.wars.model.dtos.Response;
 
 import java.io.IOException;
 import java.io.OutputStream;

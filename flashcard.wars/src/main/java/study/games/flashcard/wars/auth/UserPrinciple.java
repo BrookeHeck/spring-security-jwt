@@ -5,12 +5,10 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import study.games.flashcard.wars.models.enums.USER_STATUS;
-import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.model.enums.USER_STATUS;
+import study.games.flashcard.wars.model.entities.AppUser;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 

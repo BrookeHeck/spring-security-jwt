@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import study.games.flashcard.wars.auth.filters.ForbiddenEntryPoint;
-import study.games.flashcard.wars.auth.filters.JwtAccessDeniedHandler;
-import study.games.flashcard.wars.auth.filters.JwtAuthorizationFilter;
+import study.games.flashcard.wars.auth.filter.ForbiddenEntryPoint;
+import study.games.flashcard.wars.auth.filter.JwtAccessDeniedHandler;
+import study.games.flashcard.wars.auth.filter.JwtAuthorizationFilter;
 
 import java.util.List;
 

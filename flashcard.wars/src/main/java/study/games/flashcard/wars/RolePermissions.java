@@ -1,6 +1,6 @@
 package study.games.flashcard.wars;
 
-import study.games.flashcard.wars.models.enums.PERMISSION;
+import study.games.flashcard.wars.model.enums.PERMISSION;
 
 import java.util.ArrayList;
 import java.util.Arrays;

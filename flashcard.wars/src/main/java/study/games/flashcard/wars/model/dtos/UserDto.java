@@ -1,10 +1,10 @@
-package study.games.flashcard.wars.models.dtos;
+package study.games.flashcard.wars.model.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import study.games.flashcard.wars.models.enums.ROLE;
+import study.games.flashcard.wars.model.enums.ROLE;
 
 import java.io.Serializable;
 import java.time.LocalDate;

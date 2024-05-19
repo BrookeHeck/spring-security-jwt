@@ -11,7 +11,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import study.games.flashcard.wars.models.dtos.Response;
+import study.games.flashcard.wars.model.dtos.Response;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;

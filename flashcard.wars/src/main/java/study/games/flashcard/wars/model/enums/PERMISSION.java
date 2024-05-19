@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.models.enums;
+package study.games.flashcard.wars.model.enums;
 
 public enum PERMISSION {
     ADMIN_OPERATIONS,

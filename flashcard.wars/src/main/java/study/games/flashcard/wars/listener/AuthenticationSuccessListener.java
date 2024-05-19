@@ -1,4 +1,4 @@
-package study.games.flashcard.wars.listeners;
+package study.games.flashcard.wars.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,8 +6,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 import study.games.flashcard.wars.auth.UserPrinciple;
-import study.games.flashcard.wars.auth.services.LoginAttemptService;
-import study.games.flashcard.wars.models.entities.AppUser;
+import study.games.flashcard.wars.auth.service.LoginAttemptService;
+import study.games.flashcard.wars.model.entities.AppUser;
 import study.games.flashcard.wars.service.UserService;
 
 @Component
