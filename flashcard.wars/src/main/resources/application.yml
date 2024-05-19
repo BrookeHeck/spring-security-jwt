@@ -15,3 +15,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: false
+  mail:
+    protocol: smtp,
+    port: 465
+    host: "mail.smtp.host"
+    default-encoding: UTF-8
