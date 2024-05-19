@@ -32,6 +32,7 @@ public class ApplicationConfig {
             if(user.getStatus() != USER_STATUS.ACTIVE) {
                 throw new LockedException("user tried to login with " + user.getStatus() + " status: " + username);
             }
+            user.setAuthorities(user.getRole().getPermissions());
             return new UserPrinciple(user);
         };
     }
