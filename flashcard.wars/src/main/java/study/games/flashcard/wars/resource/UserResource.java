@@ -3,8 +3,10 @@ package study.games.flashcard.wars.resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
 import study.games.flashcard.wars.auth.services.AuthenticationService;
+import study.games.flashcard.wars.exception.domain.UsernameExistsException;
 import study.games.flashcard.wars.models.dtos.UserDto;
 import study.games.flashcard.wars.models.entities.AppUser;
 
@@ -34,7 +36,7 @@ public class UserResource {
 
     @GetMapping(value = "reset-password/{email}")
     public String resetPassword(@PathVariable String email) {
-        return email;
+        throw new LockedException("locked out");
     }
 
     @GetMapping(value = "home")

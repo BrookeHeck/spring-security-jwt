@@ -27,10 +27,8 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            AppUser user = userRepo.findAppUserByUsername(username);
-            if(user == null) {
-                throw new UsernameNotFoundException("user not found: " + username);
-            }
+            AppUser user = userRepo.findAppUserByUsernameOrEmail(username).orElseThrow(() ->
+                    new UsernameNotFoundException("user not found: " + username));
             if(user.getStatus() != USER_STATUS.ACTIVE) {
                 throw new LockedException("user tried to login with " + user.getStatus() + " status: " + username);
             }
