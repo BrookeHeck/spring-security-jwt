@@ -3,13 +3,15 @@
     <option name="ALTERNATIVE_JRE_PATH" value="17" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <envs>
-      <env name="spring.datasource.username" value="bheck" />
       <env name="spring.datasource.password" value="Romeo53078" />
+      <env name="spring.datasource.username" value="bheck" />
       <env name="spring.security.secret-key" value="secret" />
+      <env name="mail.username" value="user" />
+      <env name="mail.password" value="password" />
     </envs>
     <module name="flashcard.wars.main" />
     <target name="@@@LOCAL@@@" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="study.games.flashcard.wars.Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.games.flashcard.Application" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
