@@ -33,7 +33,8 @@ public class AuthenticationService {
     private final EmailService emailService;
 
     public AppUser login(String authenticationHeader) {
-        String[] usernameAndPassword =  new String(Base64.getDecoder().decode(authenticationHeader)).split(":");
+        String encodedHeader = removeBasicPrefixFromAuthHeader(authenticationHeader);
+        String[] usernameAndPassword =  new String(Base64.getDecoder().decode(encodedHeader)).split(":");
         String username = usernameAndPassword[0];
         String password = usernameAndPassword[1];
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -69,7 +70,7 @@ public class AuthenticationService {
     }
 
     public boolean resetPassword(String authHeader, String newPassword, long userId) throws MessagingException {
-        AppUser appUser = login(authHeader);
+        AppUser appUser = login(removeBasicPrefixFromAuthHeader(authHeader));
         boolean hasPasswordReset = userRepository.resetPassword(generatePassword(newPassword), userId) != 0;
         if(hasPasswordReset) {
 //            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
@@ -113,5 +114,9 @@ public class AuthenticationService {
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());
         return appUser;
+    }
+
+    private String removeBasicPrefixFromAuthHeader(String authHeader) {
+        return authHeader.split("Basic ")[1];
     }
 }
