@@ -25,5 +25,7 @@ public interface UserService {
 
     void updateUserLastLoginToNow(long userId);
 
+    int resetPassword(String password, long userId);
+
 
 }

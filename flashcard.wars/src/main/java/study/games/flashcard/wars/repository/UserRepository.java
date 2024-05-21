@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     @Modifying
     void setLastLoginDate(@Param("LOGIN_DATE") LocalDateTime loginDate, @Param("ID") long userId);
+
+    @Modifying
+    int resetPassword(@Param("PASSWORD") String password, @Param("ID") long userId);
 }

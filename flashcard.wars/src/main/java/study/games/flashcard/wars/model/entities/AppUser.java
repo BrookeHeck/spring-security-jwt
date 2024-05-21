@@ -24,6 +24,7 @@ import java.util.List;
 @NamedQuery(name = "AppUser.updateUserStatus",
         query = "update AppUser user set user.status = :STATUS where user.username = :USERNAME_EMAIL or user.email = :USERNAME_EMAIL")
 @NamedQuery(name = "AppUser.setLastLoginDate", query = "update AppUser user set user.lastLoginDate = :LOGIN_DATE where user.id = :ID")
+@NamedQuery(name = "AppUser.resetPassword", query = "update AppUser user set user.password = :PASSWORD, user.lastPasswordUpdate = current_timestamp where user.id = :ID")
 public class AppUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

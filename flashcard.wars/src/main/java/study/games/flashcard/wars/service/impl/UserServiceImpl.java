@@ -63,5 +63,10 @@ public class UserServiceImpl implements UserService {
         userRepo.setLastLoginDate(LocalDateTime.now(), userId);
     }
 
+    @Override
+    public int resetPassword(String password, long userId) {
+        return userRepo.resetPassword(password, userId);
+    }
+
 
 }
