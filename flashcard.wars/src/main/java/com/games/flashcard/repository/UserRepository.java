@@ -32,5 +32,5 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     int resetPassword(@Param("PASSWORD") String password, @Param("ID") long userId);
 
     @Query("select new com.games.flashcard.model.query_models.UserFirstNameAndEmail(u.firstName, u.email) from AppUser u where u.id = :ID")
-    Optional<UserFirstNameAndEmail> getUserFirstName(@Param("ID") long userId);
+    Optional<UserFirstNameAndEmail> getUserFirstNameAndEmail(@Param("ID") long userId);
 }

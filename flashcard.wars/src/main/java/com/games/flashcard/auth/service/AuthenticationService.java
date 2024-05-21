@@ -6,6 +6,7 @@ import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.model.query_models.UserFirstNameAndEmail;
 import com.games.flashcard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -19,8 +20,10 @@ import org.springframework.stereotype.Service;
 import com.games.flashcard.model.enums.USER_STATUS;
 import com.games.flashcard.service.EmailService;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,11 +70,14 @@ public class AuthenticationService {
         return userRepository.save(appUser);
     }
 
-    public boolean resetPassword(String password, long userId) {
+    public boolean resetPassword(String password, long userId) throws MessagingException {
         boolean hasPasswordReset = userRepository.resetPassword(generatePassword(password), userId) != 0;
         if(hasPasswordReset) {
-//            String firstName = userRepository.getUserFirstName(userId);
-//            this.emailService.sendPasswordResetEmail(fi);
+            Optional<UserFirstNameAndEmail> userFirstNameAndEmail = userRepository.getUserFirstNameAndEmail(userId);
+            if (userFirstNameAndEmail.isPresent()) {
+                UserFirstNameAndEmail userDetails = userFirstNameAndEmail.get();
+                emailService.sendPasswordResetEmail(userDetails.getEmail(), userDetails.getFirstName());
+            }
         }
         return hasPasswordReset;
     }
