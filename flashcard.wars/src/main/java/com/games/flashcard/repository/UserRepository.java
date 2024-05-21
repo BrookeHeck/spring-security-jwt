@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.games.flashcard.model.enums.USER_STATUS;
-import com.games.flashcard.model.query_models.UserFirstNameAndEmail;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -30,7 +29,4 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     @Modifying
     @Query("update AppUser user set user.password = :PASSWORD, user.lastPasswordUpdate = current_timestamp where user.id = :ID")
     int resetPassword(@Param("PASSWORD") String password, @Param("ID") long userId);
-
-    @Query("select new com.games.flashcard.model.query_models.UserFirstNameAndEmail(u.firstName, u.email) from AppUser u where u.id = :ID")
-    Optional<UserFirstNameAndEmail> getUserFirstNameAndEmail(@Param("ID") long userId);
 }

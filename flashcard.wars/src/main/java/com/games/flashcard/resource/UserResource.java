@@ -3,15 +3,17 @@ package com.games.flashcard.resource;
 import com.games.flashcard.model.entities.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
 import com.games.flashcard.auth.service.AuthenticationService;
 import com.games.flashcard.model.dtos.UserDto;
 
+import javax.mail.MessagingException;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,15 +35,11 @@ public class UserResource {
         return new ResponseEntity<>(registeredUser, headers, CREATED);
     }
 
-    @GetMapping(value = "reset-password/{email}")
-    public String resetPassword(@PathVariable String email) {
-        throw new LockedException("locked out");
+    @GetMapping(value = "reset-password/{userId}")
+    public ResponseEntity<Boolean> resetPassword(@PathVariable long userId, @RequestBody String newPassword,
+                                @RequestHeader(AUTHORIZATION) String basicAuthHeader) throws MessagingException {
+        boolean hasPasswordReset = authService.resetPassword(basicAuthHeader, newPassword, userId);
+        HttpStatus status = hasPasswordReset ? OK : INTERNAL_SERVER_ERROR;
+        return new ResponseEntity<>(hasPasswordReset, status);
     }
-
-    @GetMapping(value = "home")
-    public String home() {
-        return "HOME";
-    }
-
-
 }

@@ -70,14 +70,11 @@ public class AuthenticationService {
         return userRepository.save(appUser);
     }
 
-    public boolean resetPassword(String password, long userId) throws MessagingException {
-        boolean hasPasswordReset = userRepository.resetPassword(generatePassword(password), userId) != 0;
+    public boolean resetPassword(String authHeader, String newPassword, long userId) throws MessagingException {
+        AppUser appUser = login(authHeader);
+        boolean hasPasswordReset = userRepository.resetPassword(generatePassword(newPassword), userId) != 0;
         if(hasPasswordReset) {
-            Optional<UserFirstNameAndEmail> userFirstNameAndEmail = userRepository.getUserFirstNameAndEmail(userId);
-            if (userFirstNameAndEmail.isPresent()) {
-                UserFirstNameAndEmail userDetails = userFirstNameAndEmail.get();
-                emailService.sendPasswordResetEmail(userDetails.getEmail(), userDetails.getFirstName());
-            }
+            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
         }
         return hasPasswordReset;
     }
