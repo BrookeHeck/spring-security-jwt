@@ -22,7 +22,6 @@ import com.games.flashcard.service.EmailService;
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
