@@ -11,7 +11,7 @@
     </envs>
     <module name="flashcard.wars.main" />
     <target name="@@@LOCAL@@@" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="study.games.flashcard.wars.Application" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.games.flashcard.Application" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
