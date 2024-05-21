@@ -7,6 +7,7 @@ import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
@@ -70,7 +72,7 @@ public class AuthenticationService {
     }
 
     public boolean resetPassword(String authHeader, String newPassword, long userId) throws MessagingException {
-        AppUser appUser = login(removeBasicPrefixFromAuthHeader(authHeader));
+        AppUser appUser = login(authHeader);
         boolean hasPasswordReset = userRepository.resetPassword(generatePassword(newPassword), userId) != 0;
         if(hasPasswordReset) {
 //            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());

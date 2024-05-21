@@ -2,9 +2,11 @@ package com.games.flashcard.service;
 
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.enums.USER_STATUS;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface UserService {
 
     AppUser findUserByUsername(String username);
