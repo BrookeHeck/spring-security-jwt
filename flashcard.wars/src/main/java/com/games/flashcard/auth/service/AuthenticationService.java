@@ -72,7 +72,7 @@ public class AuthenticationService {
         AppUser appUser = login(authHeader);
         boolean hasPasswordReset = userRepository.resetPassword(generatePassword(newPassword), userId) != 0;
         if(hasPasswordReset) {
-            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
+//            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
         }
         return hasPasswordReset;
     }
