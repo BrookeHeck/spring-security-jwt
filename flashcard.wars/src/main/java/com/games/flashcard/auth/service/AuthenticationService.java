@@ -19,10 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.games.flashcard.model.enums.USER_STATUS;
 import com.games.flashcard.service.EmailService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Base64;
+
+import static com.games.flashcard.util.FileConstant.DEFAULT_USER_IMAGE_PATH;
 
 @Service
 @Transactional
@@ -96,9 +99,8 @@ public class AuthenticationService {
         return passwordEncoder.encode(password);
     }
 
-    private String getTemporaryProfileImage() {
-        return "https://placehold.co/100x100";
-//        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/image/profile/temp").toString;
+    private String getTemporaryProfileImage(String username) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
     }
 
     private AppUser createNewAppUser(UserDto userDto) {
@@ -112,7 +114,7 @@ public class AuthenticationService {
         appUser.setUsername(userDto.getUsername());
         appUser.setLastPasswordUpdate(LocalDateTime.now());
         appUser.setAuthorities(userDto.getRole().getPermissions());
-        appUser.setProfileImageUrl(getTemporaryProfileImage());
+        appUser.setProfileImageUrl(getTemporaryProfileImage(userDto.getUsername()));
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());
         return appUser;
