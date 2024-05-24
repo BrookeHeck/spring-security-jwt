@@ -7,6 +7,7 @@ import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.repository.UserRepository;
+import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -32,7 +33,7 @@ import static com.games.flashcard.util.FileConstant.DEFAULT_USER_IMAGE_PATH;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
@@ -43,8 +44,7 @@ public class AuthenticationService {
         String username = usernameAndPassword[0];
         String password = usernameAndPassword[1];
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        return userRepository.findAppUserByUsernameOrEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        return userService.findUserByUsernameOrEmail(username);
     }
 
     public HttpHeaders getJwtTokenHeader(AppUser user) {
@@ -61,66 +61,25 @@ public class AuthenticationService {
 
     public AppUser registerUser(UserDto userDto)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
-        String username = userDto.getUsername();
-        if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
-            throw new UsernameExistsException(username + " is already being used.");
-        String email = userDto.getEmail();
-        if(StringUtils.isBlank(email) || emailAlreadyExists(email))
-            throw new EmailExistsException(email + " is already being used.");
-        if(StringUtils.isBlank(userDto.getFirstName()) || StringUtils.isBlank(userDto.getFirstName()))
-            throw new NullPointerException("Name cannot be blank on registration.");
-        if(userDto.getRole() == null) throw new NullPointerException("A role is needed for registration.");
-        AppUser appUser = createNewAppUser(userDto);
-        return userRepository.save(appUser);
+        String password = generatePassword(userDto.getPassword());
+        return userService.registerUser(userDto, password);
     }
 
     public boolean resetPassword(String authHeader, String newPassword, long userId) throws MessagingException {
         AppUser appUser = login(authHeader);
-        boolean hasPasswordReset = userRepository.resetPassword(generatePassword(newPassword), userId) != 0;
+        boolean hasPasswordReset = userService.resetPassword(generatePassword(newPassword), userId);
         if(hasPasswordReset) {
 //            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
         }
         return hasPasswordReset;
     }
 
-    private boolean userNameAlreadyExists(String userName) {
-        return userRepository.findAppUserByUsername(userName) != null;
-    }
-
-    private boolean emailAlreadyExists(String email) {
-        return userRepository.findAppUserByEmail(email) != null;
-    }
-
-    private String generateUserId() {
-        return RandomStringUtils.randomAlphanumeric(10);
-    }
-
     private String generatePassword(String password) {
         return passwordEncoder.encode(password);
-    }
-
-    private String getTemporaryProfileImage(String username) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
-    }
-
-    private AppUser createNewAppUser(UserDto userDto) {
-        AppUser appUser = new AppUser();
-        appUser.setLastLoginDate(LocalDateTime.now());
-        appUser.setUserId(generateUserId());
-        appUser.setEmail(userDto.getEmail());
-        appUser.setRole(userDto.getRole());
-        appUser.setStatus(USER_STATUS.ACTIVE);
-        appUser.setPassword(generatePassword(userDto.getPassword()));
-        appUser.setUsername(userDto.getUsername());
-        appUser.setLastPasswordUpdate(LocalDateTime.now());
-        appUser.setAuthorities(userDto.getRole().getPermissions());
-        appUser.setProfileImageUrl(getTemporaryProfileImage(userDto.getUsername()));
-        appUser.setFirstName(userDto.getFirstName());
-        appUser.setLastName(userDto.getLastName());
-        return appUser;
     }
 
     private String removeBasicPrefixFromAuthHeader(String authHeader) {
         return authHeader.split("Basic ")[1];
     }
+
 }
