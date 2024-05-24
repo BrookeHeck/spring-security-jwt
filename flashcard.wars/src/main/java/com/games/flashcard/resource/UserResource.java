@@ -35,10 +35,10 @@ public class UserResource {
         return new ResponseEntity<>(registeredUser, headers, CREATED);
     }
 
-    @GetMapping(value = "reset-password/{userId}")
-    public ResponseEntity<Boolean> resetPassword(@PathVariable long userId, @RequestBody String newPassword,
+    @GetMapping(value = "reset-password")
+    public ResponseEntity<Boolean> resetPassword( @RequestBody String newPassword,
                                 @RequestHeader(AUTHORIZATION) String basicAuthHeader) throws MessagingException {
-        boolean hasPasswordReset = authService.resetPassword(basicAuthHeader, newPassword, userId);
+        boolean hasPasswordReset = authService.resetPassword(basicAuthHeader, newPassword);
         HttpStatus status = hasPasswordReset ? OK : INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(hasPasswordReset, status);
     }

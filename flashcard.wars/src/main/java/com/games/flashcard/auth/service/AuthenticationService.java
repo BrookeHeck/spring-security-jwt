@@ -56,9 +56,9 @@ public class AuthenticationService {
         return userService.registerUser(userDto, password);
     }
 
-    public boolean resetPassword(String authHeader, String newPassword, long userId) throws MessagingException {
+    public boolean resetPassword(String authHeader, String newPassword) throws MessagingException {
         AppUser appUser = login(authHeader);
-        boolean hasPasswordReset = userService.resetPassword(generatePassword(newPassword), userId);
+        boolean hasPasswordReset = userService.resetPassword(generatePassword(newPassword), appUser.getId());
         if(hasPasswordReset) {
 //            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
         }
