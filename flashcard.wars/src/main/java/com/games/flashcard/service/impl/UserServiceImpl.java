@@ -109,11 +109,6 @@ public class UserServiceImpl implements UserService {
         return RandomStringUtils.randomAlphanumeric(10);
     }
 
-
-    private String getTemporaryProfileImage(String username) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(DEFAULT_USER_IMAGE_PATH + username).toUriString();
-    }
-
     private AppUser createNewAppUser(UserDto userDto, String password) {
         AppUser appUser = new AppUser();
         appUser.setLastLoginDate(LocalDateTime.now());
@@ -125,7 +120,7 @@ public class UserServiceImpl implements UserService {
         appUser.setUsername(userDto.getUsername());
         appUser.setLastPasswordUpdate(LocalDateTime.now());
         appUser.setAuthorities(userDto.getRole().getPermissions());
-        appUser.setProfileImageUrl(getTemporaryProfileImage(userDto.getUsername()));
+        appUser.setProfileImageUrl(getTemporaryProfileImageUrl(userDto.getUsername()));
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());
         return appUser;
@@ -144,5 +139,13 @@ public class UserServiceImpl implements UserService {
             return username;
         }
         return null;
+    }
+
+    private String getTemporaryProfileImageUrl(String username) {
+        return TEMP_PROFILE_IMAGE_BASE_URL + username;
+    }
+
+    private String getProfileImageUrl(String username) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username).toUriString();
     }
 }
