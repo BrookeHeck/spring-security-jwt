@@ -6,6 +6,7 @@ import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.enums.USER_STATUS;
 import jakarta.transaction.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,5 +30,7 @@ public interface UserService {
     AppUser registerUser(UserDto userDto, String password) throws UsernameExistsException, EmailExistsException;
 
     boolean resetPassword(String newPassword, long userId);
+
+    boolean updateUserPofilePicture(long userId, MultipartFile file);
 
 }
