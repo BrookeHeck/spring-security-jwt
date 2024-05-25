@@ -146,6 +146,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private String getProfileImageUrl(String username) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username).toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(USER_IMAGE_PATH + username
+        + "/" + username + JPG_EXTENSION).toUriString();
     }
 }
