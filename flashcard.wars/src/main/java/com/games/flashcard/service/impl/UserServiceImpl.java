@@ -92,8 +92,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserPofilePicture(long userId, String username, MultipartFile file) {
-        return false;
+    public boolean updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException {
+        String userImageUrl = saveImageToFolder(file, username);
+        return userRepo.updateUserProfilePictureUrlByUserId(userImageUrl, userId) != 0;
     }
 
     private boolean userNameAlreadyExists(String userName) {
@@ -130,7 +131,7 @@ public class UserServiceImpl implements UserService {
         return appUser;
     }
 
-    private String saveImageToFolder(MultipartFile profileImage, String username, long userId) throws IOException {
+    private String saveImageToFolder(MultipartFile profileImage, String username) throws IOException {
         if(profileImage != null) {
             Path userFolder = Paths.get(USER_FOLDER + username).toAbsolutePath().normalize();
             if(!Files.exists(userFolder)) {
@@ -139,7 +140,9 @@ public class UserServiceImpl implements UserService {
             }
             Files.deleteIfExists(Paths.get(userFolder + username + JPG_EXTENSION));
             Files.copy(profileImage.getInputStream(), userFolder.resolve(username + JPG_EXTENSION), REPLACE_EXISTING);
-            userRepo.updateUserProfilePictureUrlByUserId(username, userId);
+            log.info(FILE_SAVED_IN_FILE_SYSTEM + profileImage.getOriginalFilename());
+            return username;
         }
+        return null;
     }
 }

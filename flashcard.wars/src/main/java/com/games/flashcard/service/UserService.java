@@ -8,6 +8,7 @@ import com.games.flashcard.model.enums.USER_STATUS;
 import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Transactional
@@ -31,6 +32,6 @@ public interface UserService {
 
     boolean resetPassword(String newPassword, long userId);
 
-    boolean updateUserPofilePicture(long userId, String username, MultipartFile file);
+    boolean updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException;
 
 }
