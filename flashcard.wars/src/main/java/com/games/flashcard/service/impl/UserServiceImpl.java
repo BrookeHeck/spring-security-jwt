@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
             Files.deleteIfExists(Paths.get(userFolder + username + JPG_EXTENSION));
             Files.copy(profileImage.getInputStream(), userFolder.resolve(username + JPG_EXTENSION), REPLACE_EXISTING);
             log.info(FILE_SAVED_IN_FILE_SYSTEM + profileImage.getOriginalFilename());
-            return username;
+            return getProfileImageUrl(username);
         }
         return null;
     }
