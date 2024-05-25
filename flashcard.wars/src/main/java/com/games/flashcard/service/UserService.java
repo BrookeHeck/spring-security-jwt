@@ -31,6 +31,6 @@ public interface UserService {
 
     boolean resetPassword(String newPassword, long userId);
 
-    boolean updateUserPofilePicture(long userId, MultipartFile file);
+    boolean updateUserPofilePicture(long userId, String username, MultipartFile file);
 
 }

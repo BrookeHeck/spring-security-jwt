@@ -7,22 +7,30 @@ import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.games.flashcard.model.enums.USER_STATUS;
 import com.games.flashcard.repository.UserRepository;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.games.flashcard.util.FileConstant.DEFAULT_USER_IMAGE_PATH;
+import static com.games.flashcard.util.FileConstant.*;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
 
@@ -83,6 +91,11 @@ public class UserServiceImpl implements UserService {
         return this.userRepo.resetPassword(userPassword, userId) != 0;
     }
 
+    @Override
+    public boolean updateUserPofilePicture(long userId, String username, MultipartFile file) {
+        return false;
+    }
+
     private boolean userNameAlreadyExists(String userName) {
         return userRepo.findAppUserByUsername(userName) != null;
     }
@@ -117,5 +130,16 @@ public class UserServiceImpl implements UserService {
         return appUser;
     }
 
-
+    private String saveImageToFolder(MultipartFile profileImage, String username, long userId) throws IOException {
+        if(profileImage != null) {
+            Path userFolder = Paths.get(USER_FOLDER + username).toAbsolutePath().normalize();
+            if(!Files.exists(userFolder)) {
+                Files.createDirectories(userFolder);
+                log.info(DIRECTORY_CREATED + username);
+            }
+            Files.deleteIfExists(Paths.get(userFolder + username + JPG_EXTENSION));
+            Files.copy(profileImage.getInputStream(), userFolder.resolve(username + JPG_EXTENSION), REPLACE_EXISTING);
+            userRepo.updateUserProfilePictureUrlByUserId(username, userId);
+        }
+    }
 }
