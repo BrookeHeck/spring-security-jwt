@@ -41,24 +41,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser createUser(AppUser appUser) {
-        return userRepo.save(appUser);
-    }
-
-    @Override
     public boolean deleteUserById(Long userId) {
         userRepo.deleteById(userId);
         return true;
-    }
-
-    @Override
-    public AppUser updateUser(AppUser appUser) {
-        return userRepo.save(appUser);
-    }
-
-    @Override
-    public List<AppUser> getAllUsers() {
-        return userRepo.findAll();
     }
 
     @Override
@@ -96,6 +81,9 @@ public class UserServiceImpl implements UserService {
         String userImageUrl = saveImageToFolder(file, username);
         return userRepo.updateUserProfilePictureUrlByUserId(userImageUrl, userId) != 0;
     }
+
+    @Override
+    public String findUsernameByUserId(long userId) {return userRepo.findUsernameByUserId(userId);}
 
     private boolean userNameAlreadyExists(String userName) {
         return userRepo.findAppUserByUsername(userName) != null;

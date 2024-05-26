@@ -9,6 +9,7 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
 import com.games.flashcard.auth.service.AuthenticationService;
 import com.games.flashcard.model.dtos.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 
@@ -41,5 +42,10 @@ public class UserResource {
         boolean hasPasswordReset = authService.resetPassword(basicAuthHeader, newPassword);
         HttpStatus status = hasPasswordReset ? OK : INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(hasPasswordReset, status);
+    }
+
+    @PostMapping(value = "update-profile-pic/{userId}")
+    public ResponseEntity<String> updateUserProfilePicture(@RequestBody MultipartFile profilePicture) {
+
     }
 }

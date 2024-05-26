@@ -9,20 +9,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Transactional
 public interface UserService {
 
     AppUser findUserByUsernameOrEmail(String usernameOrEmail);
 
-    AppUser createUser(AppUser appUser);
-
     boolean deleteUserById(Long userId);
-
-    AppUser updateUser(AppUser appUser);
-
-    List<AppUser> getAllUsers();
 
     void changeAccountStatus(USER_STATUS userStatus, String usernameOrEmail);
 
@@ -33,5 +26,7 @@ public interface UserService {
     boolean resetPassword(String newPassword, long userId);
 
     boolean updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException;
+
+    String findUsernameByUserId(long userId);
 
 }
