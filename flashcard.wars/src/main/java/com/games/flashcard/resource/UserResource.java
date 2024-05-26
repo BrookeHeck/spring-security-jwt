@@ -57,6 +57,7 @@ public class UserResource {
     }
 
     @PostMapping(value = "change-user-role/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN_OPERATIONS')")
     public ResponseEntity<Boolean> updateUserRole(@PathVariable long userId, @RequestBody ROLE role) {
         boolean updateSuccessful = userService.updateUserRole(role, userId);
         return new ResponseEntity<>(updateSuccessful, OK);
