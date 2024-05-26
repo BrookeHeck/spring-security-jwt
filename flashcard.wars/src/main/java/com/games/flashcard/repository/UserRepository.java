@@ -1,6 +1,7 @@
 package com.games.flashcard.repository;
 
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.model.enums.ROLE;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,15 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
     @Modifying
     @Query("update AppUser user set user.password = :PASSWORD, user.lastPasswordUpdate = current_timestamp where user.id = :ID")
     int resetPassword(@Param("PASSWORD") String password, @Param("ID") long userId);
+
+    @Modifying
+    @Query("update AppUser  user set user.profileImageUrl = :IMAGE_URL where user.id = :ID")
+    void updateUserProfilePictureUrlByUserId(@Param("IMAGE_URL") String imageUrl, @Param("ID") long userId);
+
+    @Query("select user.username from AppUser user where user.id = :ID")
+    String findUsernameByUserId(@Param("ID") long userId);
+
+    @Modifying
+    @Query("update AppUser user set user.role = :ROLE where user.id = :ID")
+    int changeUserRole(@Param("ROLE")ROLE role, @Param("ID") long userId);
 }
