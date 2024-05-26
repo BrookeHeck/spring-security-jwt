@@ -4,6 +4,7 @@ import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -84,6 +85,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String findUsernameByUserId(long userId) {return userRepo.findUsernameByUserId(userId);}
+
+    @Override
+    public boolean updateUserRole(ROLE role, long userId) {return userRepo.changeUserRole(role, userId) != 0;}
 
     private boolean userNameAlreadyExists(String userName) {
         return userRepo.findAppUserByUsername(userName) != null;
