@@ -1,6 +1,7 @@
 package com.games.flashcard.resource;
 
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 
+import java.io.IOException;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.*;
 
@@ -21,6 +24,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping(value = "/user")
 public class UserResource {
     private final AuthenticationService authService;
+    private final UserService userService;
 
     @GetMapping(value = "login")
     public ResponseEntity<AppUser> login(@RequestHeader(AUTHORIZATION) String basicAuthHeader) {
@@ -45,7 +49,9 @@ public class UserResource {
     }
 
     @PostMapping(value = "update-profile-pic/{userId}")
-    public ResponseEntity<String> updateUserProfilePicture(@RequestBody MultipartFile profilePicture) {
-
+    public ResponseEntity<String> updateUserProfilePicture(@RequestBody MultipartFile profilePicture, @RequestParam long userId) throws IOException {
+        String username = userService.findUsernameByUserId(userId);
+        String profilePictureUpdatedUrl = userService.updateUserPofilePicture(userId, username, profilePicture);
+        return new ResponseEntity<>(profilePictureUpdatedUrl, OK);
     }
 }

@@ -25,7 +25,7 @@ public interface UserService {
 
     boolean resetPassword(String newPassword, long userId);
 
-    boolean updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException;
+    String updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException;
 
     String findUsernameByUserId(long userId);
 

@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.games.flashcard.util.FileConstant.*;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -77,9 +76,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException {
+    public String  updateUserPofilePicture(long userId, String username, MultipartFile file) throws IOException {
         String userImageUrl = saveImageToFolder(file, username);
-        return userRepo.updateUserProfilePictureUrlByUserId(userImageUrl, userId) != 0;
+        userRepo.updateUserProfilePictureUrlByUserId(userImageUrl, userId);
+        return userImageUrl;
     }
 
     @Override
