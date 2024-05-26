@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
 import com.games.flashcard.auth.service.AuthenticationService;
 import com.games.flashcard.model.dtos.UserDto;
@@ -49,7 +48,7 @@ public class UserResource {
     }
 
     @PostMapping(value = "update-profile-pic/{userId}")
-    public ResponseEntity<String> updateUserProfilePicture(@RequestBody MultipartFile profilePicture, @RequestParam long userId) throws IOException {
+    public ResponseEntity<String> updateUserProfilePicture(@RequestBody MultipartFile profilePicture, @PathVariable long userId) throws IOException {
         String username = userService.findUsernameByUserId(userId);
         String profilePictureUpdatedUrl = userService.updateUserPofilePicture(userId, username, profilePicture);
         return new ResponseEntity<>(profilePictureUpdatedUrl, OK);
