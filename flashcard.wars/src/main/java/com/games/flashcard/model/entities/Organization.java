@@ -1,6 +1,5 @@
 package com.games.flashcard.model.entities;
 
-import com.games.flashcard.model.enums.ROLE;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,16 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Role {
+public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Enumerated(EnumType.STRING)
-    private ROLE role;
+    private String displayName;
+    private long organizationCode;
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private AppUser user;
-    @ManyToOne
-    @JoinColumn(name = "organizationId")
-    private Organization organization;
+    @JoinColumn(name = "adminUserId")
+    private AppUser adminUser;
 }
