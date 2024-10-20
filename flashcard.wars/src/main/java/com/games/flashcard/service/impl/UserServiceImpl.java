@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
         appUser.setPassword(password);
         appUser.setUsername(userDto.getUsername());
         appUser.setLastPasswordUpdate(LocalDateTime.now());
-        appUser.setAuthorities(userDto.getRole().getPermissions());
+        appUser.setAuthorities(userDto.getRole().getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImageUrl(userDto.getUsername()));
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());

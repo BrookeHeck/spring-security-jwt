@@ -10,6 +10,7 @@ import com.games.flashcard.model.entities.AppUser;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -19,9 +20,12 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return appUser.getRole().getPermissions().stream().map(permission ->
+        List<SimpleGrantedAuthority> authorities = appUser.getRole().getRole().getPermissions().stream().map(permission ->
                 new SimpleGrantedAuthority(permission.toString()))
                 .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority(appUser.getUserId()));
+        authorities.add(new SimpleGrantedAuthority(Long.toString(appUser.getRole().getOrganization().getId())));
+        return authorities;
     }
 
     @Override
