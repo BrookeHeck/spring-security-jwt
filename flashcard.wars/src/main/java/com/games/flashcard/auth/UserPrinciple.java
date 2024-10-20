@@ -20,11 +20,13 @@ public class UserPrinciple implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = appUser.getRole().getRole().getPermissions().stream().map(permission ->
-                new SimpleGrantedAuthority(permission.toString()))
+        List<GrantedAuthority> authorities = appUser.getRoles().stream().flatMap(role ->
+                role.getRole().getPermissions().stream().map(permission ->
+                        new SimpleGrantedAuthority(permission.toString()))).collect(Collectors.toList());
+        List<GrantedAuthority> organizationIds = appUser.getRoles().stream().map(role ->
+                        new SimpleGrantedAuthority(Long.toString(role.getOrganization().getId())))
                 .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority(appUser.getUserId()));
-        authorities.add(new SimpleGrantedAuthority(Long.toString(appUser.getRole().getOrganization().getId())));
+        authorities.addAll(organizationIds);
         return authorities;
     }
 
@@ -59,4 +61,5 @@ public class UserPrinciple implements UserDetails {
     public boolean isEnabled() {
         return appUser.getStatus() == USER_STATUS.ACTIVE;
     }
+
 }
