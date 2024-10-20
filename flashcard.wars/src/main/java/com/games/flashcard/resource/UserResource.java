@@ -1,13 +1,11 @@
 package com.games.flashcard.resource;
 
 import com.games.flashcard.model.entities.AppUser;
-import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.games.flashcard.auth.service.AuthenticationService;
 import com.games.flashcard.model.dtos.UserDto;
@@ -54,11 +52,5 @@ public class UserResource {
         String username = userService.findUsernameByUserId(userId);
         String profilePictureUpdatedUrl = userService.updateUserPofilePicture(userId, username, profilePicture);
         return new ResponseEntity<>(profilePictureUpdatedUrl, OK);
-    }
-
-    @PostMapping(value = "change-user-role/{userId}")
-    public ResponseEntity<Boolean> updateUserRole(@PathVariable long userId, @RequestBody ROLE role) {
-        boolean updateSuccessful = userService.updateUserRole(role, userId);
-        return new ResponseEntity<>(updateSuccessful, OK);
     }
 }

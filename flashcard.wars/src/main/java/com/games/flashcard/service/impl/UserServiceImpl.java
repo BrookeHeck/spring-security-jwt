@@ -86,9 +86,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String findUsernameByUserId(long userId) {return userRepo.findUsernameByUserId(userId);}
 
-    @Override
-    public boolean updateUserRole(ROLE role, long userId) {return userRepo.changeUserRole(role, userId) != 0;}
-
     private boolean userNameAlreadyExists(String userName) {
         return userRepo.findAppUserByUsername(userName) != null;
     }
@@ -106,12 +103,11 @@ public class UserServiceImpl implements UserService {
         appUser.setLastLoginDate(LocalDateTime.now());
         appUser.setUserId(generateUserId());
         appUser.setEmail(userDto.getEmail());
-        appUser.setRole(userDto.getRole());
         appUser.setStatus(USER_STATUS.ACTIVE);
         appUser.setPassword(password);
         appUser.setUsername(userDto.getUsername());
         appUser.setLastPasswordUpdate(LocalDateTime.now());
-        appUser.setAuthorities(userDto.getRole().getPermissions());
+        appUser.setAuthorities(userDto.getRole().getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImageUrl(userDto.getUsername()));
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());

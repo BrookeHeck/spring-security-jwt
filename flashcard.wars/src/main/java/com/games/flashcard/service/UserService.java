@@ -30,6 +30,4 @@ public interface UserService {
 
     String findUsernameByUserId(long userId);
 
-    boolean updateUserRole(ROLE role, long userId);
-
 }

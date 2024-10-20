@@ -37,8 +37,4 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     @Query("select user.username from AppUser user where user.id = :ID")
     String findUsernameByUserId(@Param("ID") long userId);
-
-    @Modifying
-    @Query("update AppUser user set user.role = :ROLE where user.id = :ID")
-    int changeUserRole(@Param("ROLE")ROLE role, @Param("ID") long userId);
 }
