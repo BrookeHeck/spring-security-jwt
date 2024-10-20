@@ -1,18 +1,11 @@
 package com.games.flashcard.resource;
 
 import com.games.flashcard.model.entities.AppUser;
-import com.games.flashcard.model.entities.Role;
-import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.games.flashcard.auth.service.AuthenticationService;
 import com.games.flashcard.model.dtos.UserDto;
@@ -21,9 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.mail.MessagingException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.*;
@@ -62,12 +52,5 @@ public class UserResource {
         String username = userService.findUsernameByUserId(userId);
         String profilePictureUpdatedUrl = userService.updateUserPofilePicture(userId, username, profilePicture);
         return new ResponseEntity<>(profilePictureUpdatedUrl, OK);
-    }
-
-    @PostMapping(value = "change-user-role/{userId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN_OPERATIONS')")
-    public ResponseEntity<Boolean> updateUserRole(@PathVariable long userId, @RequestBody ROLE role) {
-        boolean updateSuccessful = userService.updateUserRole(role, userId);
-        return new ResponseEntity<>(updateSuccessful, OK);
     }
 }
