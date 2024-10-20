@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class UserDto implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private ROLE role;
+    private List<ROLE> roles;
     private String profileImageUrl;
     private LocalDate lastLoginDate;
     private LocalDate dateJoined;

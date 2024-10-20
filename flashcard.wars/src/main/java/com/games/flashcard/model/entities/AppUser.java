@@ -39,4 +39,6 @@ public class AppUser implements Serializable {
     private USER_STATUS status;
     @Transient
     private List<PERMISSION> authorities;
+    @OneToMany
+    private List<Role> roles;
 }
