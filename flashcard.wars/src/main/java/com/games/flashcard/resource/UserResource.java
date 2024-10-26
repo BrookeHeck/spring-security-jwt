@@ -5,6 +5,7 @@ import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,14 @@ import static org.springframework.http.HttpStatus.*;
 public class UserResource {
     private final AuthenticationService authService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping(value = "login")
-    public ResponseEntity<AppUser> login(@RequestHeader(AUTHORIZATION) String basicAuthHeader) {
+    public ResponseEntity<UserDto> login(@RequestHeader(AUTHORIZATION) String basicAuthHeader) {
         AppUser user = authService.login(basicAuthHeader);
         HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
-        return new ResponseEntity<>(user, httpHeaders, OK);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        return new ResponseEntity<>(userDto, httpHeaders, OK);
     }
 
     @GetMapping(value = "select-role-org/{role}/{orgId}")

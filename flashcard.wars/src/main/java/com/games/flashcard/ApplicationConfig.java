@@ -4,6 +4,7 @@ package com.games.flashcard;
 import com.games.flashcard.auth.UserPrinciple;
 import com.games.flashcard.model.entities.AppUser;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

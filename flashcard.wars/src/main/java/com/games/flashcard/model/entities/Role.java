@@ -1,6 +1,5 @@
 package com.games.flashcard.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.games.flashcard.model.enums.ROLE;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
