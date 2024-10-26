@@ -1,4 +1,4 @@
-package com.games.flashcard;
+package com.games.flashcard.util;
 
 import com.games.flashcard.model.enums.PERMISSION;
 

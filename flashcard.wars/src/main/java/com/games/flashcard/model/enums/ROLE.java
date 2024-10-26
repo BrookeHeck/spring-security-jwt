@@ -2,7 +2,7 @@ package com.games.flashcard.model.enums;
 
 import java.util.List;
 
-import static com.games.flashcard.RolePermissions.*;
+import static com.games.flashcard.util.RolePermissions.*;
 
 public enum ROLE {
     STUDENT(STUDENT_PERMISSION, "STUDENT"),
