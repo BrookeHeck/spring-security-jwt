@@ -43,8 +43,7 @@ public class UserResource {
     @GetMapping(value = "select-role-org/{role}/{orgId}")
     public ResponseEntity<UserDto> selectRoleOrgPair(@RequestHeader(AUTHORIZATION) String header,
                                                     @PathVariable ROLE role, @PathVariable long orgId) throws IllegalAccessException {
-        String token = header.substring(SecurityConstants.TOKEN_PREFIX.length());
-        UserDto user = authService.selectRoleOrgPair(token, role, orgId);
+        UserDto user = authService.selectRoleOrgPair(header, role, orgId);
         HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
         return new ResponseEntity<>(user, httpHeaders, OK);
     }

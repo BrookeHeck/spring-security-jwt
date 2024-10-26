@@ -42,8 +42,8 @@ public class AuthenticationService {
         return userService.findUserByUsernameOrEmail(username);
     }
 
-    public UserDto selectRoleOrgPair(String token, ROLE role, long organizationId) throws IllegalAccessException {
-        String username = jwtService.getSubject(token);
+    public UserDto selectRoleOrgPair(String header, ROLE role, long organizationId) throws IllegalAccessException {
+        String username = jwtService.getSubject(removeBasicPrefixFromAuthHeader(header));
         UserDto appUser = userService.findUserByUsernameOrEmail(username);
         boolean userIsAssignedToRole = userIsAssignedRoleOrgPair(appUser.getRoles(), role, organizationId);
         if(userIsAssignedToRole) {
