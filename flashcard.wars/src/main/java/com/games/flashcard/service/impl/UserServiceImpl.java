@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
             throw new EmailExistsException(email + " is already being used.");
         if(StringUtils.isBlank(userDto.getFirstName()) || StringUtils.isBlank(userDto.getFirstName()))
             throw new NullPointerException("Name cannot be blank on registration.");
-        if(userDto.getRole() == null) throw new NullPointerException("A role is needed for registration.");
         AppUser appUser = createNewAppUser(userDto, password);
         return userRepo.save(appUser);
     }
@@ -107,7 +106,7 @@ public class UserServiceImpl implements UserService {
         appUser.setPassword(password);
         appUser.setUsername(userDto.getUsername());
         appUser.setLastPasswordUpdate(LocalDateTime.now());
-        appUser.setAuthorities(userDto.getRole().getRole().getPermissions());
+//        appUser.setAuthorities(userDto.getRoles().getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImageUrl(userDto.getUsername()));
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());

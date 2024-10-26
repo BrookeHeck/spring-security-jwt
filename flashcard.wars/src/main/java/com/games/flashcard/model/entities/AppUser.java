@@ -1,5 +1,6 @@
 package com.games.flashcard.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,8 @@ import com.games.flashcard.model.enums.USER_STATUS;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -39,6 +42,6 @@ public class AppUser implements Serializable {
     private USER_STATUS status;
     @Transient
     private List<PERMISSION> authorities;
-    @OneToMany
-    private List<Role> roles;
+    @OneToMany(mappedBy = "user")
+    private Set<Role> roles;
 }

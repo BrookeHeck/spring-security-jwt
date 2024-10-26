@@ -1,5 +1,6 @@
 package com.games.flashcard.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.games.flashcard.model.enums.ROLE;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,9 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private ROLE role;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private AppUser user;
     @ManyToOne
-    @JoinColumn(name = "organizationId")
+    @JoinColumn(name = "organization_id")
     private Organization organization;
 }

@@ -23,7 +23,6 @@ public class UserDto implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private Role role;
     private List<ROLE> roles;
     private String profileImageUrl;
     private LocalDate lastLoginDate;

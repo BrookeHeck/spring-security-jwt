@@ -6,6 +6,8 @@ import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.model.entities.Role;
+import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import com.games.flashcard.service.EmailService;
 
 import javax.mail.MessagingException;
 import java.util.Base64;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -38,6 +41,18 @@ public class AuthenticationService {
         return userService.findUserByUsernameOrEmail(username);
     }
 
+    public AppUser selectRoleOrgPair(String token, ROLE role, long organizationId) throws IllegalAccessException {
+        String username = jwtService.getSubject(token);
+        AppUser appUser = userService.findUserByUsernameOrEmail(username);
+        boolean userIsAssignedToRole = userIsAssignedRoleOrgPair(appUser.getRoles(), role, organizationId);
+        if(userIsAssignedToRole) {
+            appUser.setAuthorities(role.getPermissions());
+        } else {
+            throw new IllegalAccessException("User does not have access to role at org");
+        }
+        return appUser;
+    }
+
     public HttpHeaders getJwtTokenHeader(AppUser user) {
         String jwt = generateJwtToken(user);
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -46,7 +61,7 @@ public class AuthenticationService {
     }
 
     private String generateJwtToken(AppUser appUser) {
-        UserPrinciple userPrinciple = new UserPrinciple(appUser);
+        UserPrinciple userPrinciple = new UserPrinciple(appUser, null);
         return jwtService.generateJwt(userPrinciple);
     }
 
@@ -71,6 +86,15 @@ public class AuthenticationService {
 
     private String removeBasicPrefixFromAuthHeader(String authHeader) {
         return authHeader.split("Basic ")[1];
+    }
+
+    private boolean userIsAssignedRoleOrgPair(Set<Role> roles, ROLE role, long organizationId) {
+        for(Role index : roles) {
+            if(index.getRole() == role && index.getOrganization().getId() == organizationId) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

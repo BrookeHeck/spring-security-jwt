@@ -1,8 +1,10 @@
 package com.games.flashcard.resource;
 
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.*;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/user")
@@ -32,10 +35,20 @@ public class UserResource {
         return new ResponseEntity<>(user, httpHeaders, OK);
     }
 
+    @GetMapping(value = "select-role-org/{role}/{orgId}")
+    public ResponseEntity<AppUser> selectRoleOrgPair(@RequestHeader(AUTHORIZATION) String token,
+                                                    @PathVariable ROLE role, @PathVariable long orgId) throws IllegalAccessException {
+        AppUser user = authService.selectRoleOrgPair(token, role, orgId);
+        HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
+        return new ResponseEntity<>(user, httpHeaders, OK);
+    }
+
     @PostMapping(value = "register")
     public ResponseEntity<AppUser> register(@RequestBody UserDto userDto) throws Exception {
+        log.info("Registration attempt for username: " + userDto.getUsername(), " and email: " + userDto.getEmail());
         AppUser registeredUser = authService.registerUser(userDto);
         HttpHeaders headers = authService.getJwtTokenHeader(registeredUser);
+        log.info("User created with username: " + registeredUser.getUsername() + " and email: " + registeredUser.getEmail());
         return new ResponseEntity<>(registeredUser, headers, CREATED);
     }
 
