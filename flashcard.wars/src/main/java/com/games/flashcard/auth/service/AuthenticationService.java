@@ -4,6 +4,7 @@ import com.games.flashcard.auth.SecurityConstants;
 import com.games.flashcard.auth.UserPrinciple;
 import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
+import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.entities.Role;
@@ -32,7 +33,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
-    public AppUser login(String authenticationHeader) {
+    public UserDto login(String authenticationHeader) {
         String encodedHeader = removeBasicPrefixFromAuthHeader(authenticationHeader);
         String[] usernameAndPassword =  new String(Base64.getDecoder().decode(encodedHeader)).split(":");
         String username = usernameAndPassword[0];
@@ -41,9 +42,9 @@ public class AuthenticationService {
         return userService.findUserByUsernameOrEmail(username);
     }
 
-    public AppUser selectRoleOrgPair(String token, ROLE role, long organizationId) throws IllegalAccessException {
+    public UserDto selectRoleOrgPair(String token, ROLE role, long organizationId) throws IllegalAccessException {
         String username = jwtService.getSubject(token);
-        AppUser appUser = userService.findUserByUsernameOrEmail(username);
+        UserDto appUser = userService.findUserByUsernameOrEmail(username);
         boolean userIsAssignedToRole = userIsAssignedRoleOrgPair(appUser.getRoles(), role, organizationId);
         if(userIsAssignedToRole) {
             appUser.setAuthorities(role.getPermissions());
@@ -53,26 +54,26 @@ public class AuthenticationService {
         return appUser;
     }
 
-    public HttpHeaders getJwtTokenHeader(AppUser user) {
+    public HttpHeaders getJwtTokenHeader(UserDto user) {
         String jwt = generateJwtToken(user);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(SecurityConstants.JWT_HEADER, jwt);
         return httpHeaders;
     }
 
-    private String generateJwtToken(AppUser appUser) {
+    private String generateJwtToken(UserDto appUser) {
         UserPrinciple userPrinciple = new UserPrinciple(appUser, null);
         return jwtService.generateJwt(userPrinciple);
     }
 
-    public AppUser registerUser(UserDto userDto)
+    public UserDto registerUser(UserDto userDto)
             throws UsernameExistsException, EmailExistsException, NullPointerException {
         String password = generatePassword(userDto.getPassword());
         return userService.registerUser(userDto, password);
     }
 
     public boolean resetPassword(String authHeader, String newPassword) throws MessagingException {
-        AppUser appUser = login(authHeader);
+        UserDto appUser = login(authHeader);
         boolean hasPasswordReset = userService.resetPassword(generatePassword(newPassword), appUser.getId());
         if(hasPasswordReset) {
 //            emailService.sendPasswordResetEmail(appUser.getFirstName(), appUser.getEmail());
@@ -88,9 +89,9 @@ public class AuthenticationService {
         return authHeader.split("Basic ")[1];
     }
 
-    private boolean userIsAssignedRoleOrgPair(Set<Role> roles, ROLE role, long organizationId) {
-        for(Role index : roles) {
-            if(index.getRole() == role && index.getOrganization().getId() == organizationId) {
+    private boolean userIsAssignedRoleOrgPair(Set<RoleDto> roles, ROLE role, long organizationId) {
+        for(RoleDto index : roles) {
+            if(index.getRole() == role && index.getOrganizationId() == organizationId) {
                 return true;
             }
         }

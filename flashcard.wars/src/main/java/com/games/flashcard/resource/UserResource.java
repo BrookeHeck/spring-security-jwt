@@ -32,24 +32,24 @@ public class UserResource {
 
     @GetMapping(value = "login")
     public ResponseEntity<UserDto> login(@RequestHeader(AUTHORIZATION) String basicAuthHeader) {
-        AppUser user = authService.login(basicAuthHeader);
+        UserDto user = authService.login(basicAuthHeader);
         HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
         UserDto userDto = modelMapper.map(user, UserDto.class);
         return new ResponseEntity<>(userDto, httpHeaders, OK);
     }
 
     @GetMapping(value = "select-role-org/{role}/{orgId}")
-    public ResponseEntity<AppUser> selectRoleOrgPair(@RequestHeader(AUTHORIZATION) String token,
+    public ResponseEntity<UserDto> selectRoleOrgPair(@RequestHeader(AUTHORIZATION) String token,
                                                     @PathVariable ROLE role, @PathVariable long orgId) throws IllegalAccessException {
-        AppUser user = authService.selectRoleOrgPair(token, role, orgId);
+        UserDto user = authService.selectRoleOrgPair(token, role, orgId);
         HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
         return new ResponseEntity<>(user, httpHeaders, OK);
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<AppUser> register(@RequestBody UserDto userDto) throws Exception {
+    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) throws Exception {
         log.info("Registration attempt for username: " + userDto.getUsername(), " and email: " + userDto.getEmail());
-        AppUser registeredUser = authService.registerUser(userDto);
+        UserDto registeredUser = authService.registerUser(userDto);
         HttpHeaders headers = authService.getJwtTokenHeader(registeredUser);
         log.info("User created with username: " + registeredUser.getUsername() + " and email: " + registeredUser.getEmail());
         return new ResponseEntity<>(registeredUser, headers, CREATED);

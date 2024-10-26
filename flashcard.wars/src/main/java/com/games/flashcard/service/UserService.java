@@ -14,7 +14,7 @@ import java.io.IOException;
 @Transactional
 public interface UserService {
 
-    AppUser findUserByUsernameOrEmail(String usernameOrEmail);
+    UserDto findUserByUsernameOrEmail(String usernameOrEmail);
 
     boolean deleteUserById(Long userId);
 
@@ -22,7 +22,7 @@ public interface UserService {
 
     void updateUserLastLoginToNow(long userId);
 
-    AppUser registerUser(UserDto userDto, String password) throws UsernameExistsException, EmailExistsException;
+    UserDto registerUser(UserDto userDto, String password) throws UsernameExistsException, EmailExistsException;
 
     boolean resetPassword(String newPassword, long userId);
 
