@@ -4,6 +4,7 @@ import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -16,22 +17,25 @@ import java.util.stream.Collectors;
 @Configuration
 @RequiredArgsConstructor
 public class MapperConfiguration {
-    Converter<AppUser, UserDto> appUserUserDtoConverter = context -> {
-        AppUser entity = context.getSource();
-        UserDto dto = context.getDestination();
-        dto.setId(entity.getId());
-        dto.setUserId(entity.getUserId());
-        dto.setEmail(entity.getEmail());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        dto.setProfileImageUrl(entity.getProfileImageUrl());
-        dto.setLastLoginDate(entity.getLastLoginDate());
-        dto.setDateJoined(entity.getDateJoined());
-        Set<RoleDto> roleDtos = entity.getRoles().stream().map(role -> new RoleDto(
-                role.getId(), role.getRole(), role.getOrganization().getId(), role.getUser().getId()))
-                .collect(Collectors.toSet());
-        dto.setRoles(roleDtos);
-        return dto;
+    Converter<AppUser, UserDto> appUserUserDtoConverter = new AbstractConverter<>() {
+        @Override
+        protected UserDto convert(AppUser source) {
+            UserDto dto = new UserDto();
+            dto.setId(source.getId());
+            dto.setUserId(source.getUserId());
+            dto.setUsername(source.getUsername());
+            dto.setEmail(source.getEmail());
+            dto.setFirstName(source.getFirstName());
+            dto.setLastName(source.getLastName());
+            dto.setProfileImageUrl(source.getProfileImageUrl());
+            dto.setLastLoginDate(source.getLastLoginDate());
+            dto.setDateJoined(source.getDateJoined());
+            Set<RoleDto> roleDtos = source.getRoles().stream().map(role -> new RoleDto(
+                            role.getId(), role.getRole(), role.getOrganization().getId(), source.getId()))
+                    .collect(Collectors.toSet());
+            dto.setRoles(roleDtos);
+            return dto;
+        }
     };
 
     @Bean
