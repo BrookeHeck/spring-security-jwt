@@ -1,5 +1,6 @@
 package com.games.flashcard.resource;
 
+import com.games.flashcard.auth.SecurityConstants;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
@@ -9,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.games.flashcard.auth.service.AuthenticationService;
 import com.games.flashcard.model.dtos.UserDto;
@@ -39,8 +41,9 @@ public class UserResource {
     }
 
     @GetMapping(value = "select-role-org/{role}/{orgId}")
-    public ResponseEntity<UserDto> selectRoleOrgPair(@RequestHeader(AUTHORIZATION) String token,
+    public ResponseEntity<UserDto> selectRoleOrgPair(@RequestHeader(AUTHORIZATION) String header,
                                                     @PathVariable ROLE role, @PathVariable long orgId) throws IllegalAccessException {
+        String token = header.substring(SecurityConstants.TOKEN_PREFIX.length());
         UserDto user = authService.selectRoleOrgPair(token, role, orgId);
         HttpHeaders httpHeaders = authService.getJwtTokenHeader(user);
         return new ResponseEntity<>(user, httpHeaders, OK);
@@ -69,4 +72,10 @@ public class UserResource {
         String profilePictureUpdatedUrl = userService.updateUserPofilePicture(userId, username, profilePicture);
         return new ResponseEntity<>(profilePictureUpdatedUrl, OK);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN_OPERATIONS')")
+    public ResponseEntity<String> test() {
+        return new ResponseEntity<>("good copy", OK);
+    }
+
 }
