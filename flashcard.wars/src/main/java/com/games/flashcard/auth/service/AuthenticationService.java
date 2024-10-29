@@ -6,8 +6,6 @@ import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.UserDto;
-import com.games.flashcard.model.entities.AppUser;
-import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
@@ -43,7 +41,7 @@ public class AuthenticationService {
     }
 
     public UserDto selectRoleOrgPair(String header, ROLE role, long organizationId) throws IllegalAccessException {
-        String username = jwtService.getSubject(removeBasicPrefixFromAuthHeader(header));
+        String username = jwtService.getSubject(removeBearerPrefixFromAuthHeader(header));
         UserDto appUser = userService.findUserByUsernameOrEmail(username);
         boolean userIsAssignedToRole = userIsAssignedRoleOrgPair(appUser.getRoles(), role, organizationId);
         if(userIsAssignedToRole) {
@@ -87,6 +85,10 @@ public class AuthenticationService {
 
     private String removeBasicPrefixFromAuthHeader(String authHeader) {
         return authHeader.split("Basic ")[1];
+    }
+
+    private String removeBearerPrefixFromAuthHeader(String authHeader) {
+        return authHeader.split("Bearer ")[1];
     }
 
     private boolean userIsAssignedRoleOrgPair(Set<RoleDto> roles, ROLE role, long organizationId) {

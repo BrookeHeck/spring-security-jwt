@@ -73,8 +73,15 @@ public class UserResource {
     }
 
     @PreAuthorize("hasAuthority('ADMIN_OPERATIONS')")
+    @GetMapping("test")
     public ResponseEntity<String> test() {
         return new ResponseEntity<>("good copy", OK);
+    }
+
+    @PreAuthorize("hasAuthority('NEGATIVE_TESTING')")
+    @GetMapping("test-2")
+    public ResponseEntity<String> negative() {
+        return new ResponseEntity<>("negative", OK);
     }
 
 }
