@@ -1,13 +1,12 @@
 package com.games.flashcard.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Setter
@@ -18,4 +17,8 @@ public class FlashcardSet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @OneToOne
+    private Organization organization;
+    @OneToMany(mappedBy = "flashcardSet")
+    Set<Flashcard> flashcards;
 }
