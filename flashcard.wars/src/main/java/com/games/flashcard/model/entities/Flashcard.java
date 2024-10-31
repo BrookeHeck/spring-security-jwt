@@ -17,6 +17,7 @@ public class Flashcard {
     private long id;
     private String question;
     private String answer;
+    private int points;
     @ManyToOne
     FlashcardSet flashcardSet;
 
