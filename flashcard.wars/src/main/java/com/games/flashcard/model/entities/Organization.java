@@ -20,4 +20,5 @@ public class Organization {
     @ManyToOne
     @JoinColumn(name = "adminUserId")
     private AppUser adminUser;
+
 }

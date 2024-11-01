@@ -56,6 +56,7 @@ public class AuthenticationService {
         String jwt = generateJwtToken(user);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(SecurityConstants.JWT_HEADER, jwt);
+        httpHeaders.add("Access-Control-Expose-Headers", "jwt-header");
         return httpHeaders;
     }
 
