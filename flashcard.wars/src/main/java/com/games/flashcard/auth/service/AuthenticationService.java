@@ -40,11 +40,11 @@ public class AuthenticationService {
         return userService.findUserByUsernameOrEmail(username);
     }
 
-    public UserDto selectRoleOrgPair(String header, ROLE role, long organizationId) throws IllegalAccessException {
+    public UserDto selectRoleOrgPair(String header, long roleId) throws IllegalAccessException {
         String username = jwtService.getSubject(removeBearerPrefixFromAuthHeader(header));
         UserDto appUser = userService.findUserByUsernameOrEmail(username);
-        boolean userIsAssignedToRole = userIsAssignedRoleOrgPair(appUser.getRoles(), role, organizationId);
-        if(userIsAssignedToRole) {
+        ROLE role = userIsAssignedRoleOrgPair(appUser.getRoles(), roleId);
+        if(role != null) {
             appUser.setAuthorities(role.getPermissions());
         } else {
             throw new IllegalAccessException("User does not have access to role at org");
@@ -92,13 +92,13 @@ public class AuthenticationService {
         return authHeader.split("Bearer ")[1];
     }
 
-    private boolean userIsAssignedRoleOrgPair(Set<RoleDto> roles, ROLE role, long organizationId) {
+    private ROLE userIsAssignedRoleOrgPair(Set<RoleDto> roles, long roleId) {
         for(RoleDto index : roles) {
-            if(index.getRole() == role && index.getOrganizationId() == organizationId) {
-                return true;
+            if(index.getId() == roleId) {
+                return index.getRole();
             }
         }
-        return false;
+        return null;
     }
 
 }
