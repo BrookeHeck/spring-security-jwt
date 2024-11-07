@@ -16,5 +16,6 @@ public class RoleDto implements Serializable {
     private long id;
     private ROLE role;
     private long organizationId;
+    private String organizationName;
     private long userId;
 }

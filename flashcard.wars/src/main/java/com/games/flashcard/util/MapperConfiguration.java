@@ -36,7 +36,8 @@ public class MapperConfiguration {
             dto.setStatus(source.getStatus());
             dto.setAuthorities(source.getAuthorities() == null ? new ArrayList<>() : source.getAuthorities());
             Set<RoleDto> roleDtos = source.getRoles().stream().map(role -> new RoleDto(
-                            role.getId(), role.getRole(), role.getOrganization().getId(), source.getId()))
+                            role.getId(), role.getRole(), role.getOrganization().getId(),
+                            role.getOrganization().getDisplayName(), source.getId()))
                     .collect(Collectors.toSet());
             dto.setRoles(roleDtos);
             return dto;
