@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Getter
 public class UserPrinciple implements UserDetails {
     private UserDto appUser;
-    private Role selectedRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

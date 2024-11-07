@@ -24,7 +24,7 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         return username -> {
             UserDto user = userService.findUserByUsernameOrEmail(username);
-            return new UserPrinciple(user, null);
+            return new UserPrinciple(user);
         };
     }
 

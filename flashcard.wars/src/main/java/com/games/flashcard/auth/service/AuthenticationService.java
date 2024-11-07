@@ -6,7 +6,6 @@ import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.UserDto;
-import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +42,10 @@ public class AuthenticationService {
     public UserDto selectRoleOrgPair(String header, long roleId) throws IllegalAccessException {
         String username = jwtService.getSubject(removeBearerPrefixFromAuthHeader(header));
         UserDto appUser = userService.findUserByUsernameOrEmail(username);
-        ROLE role = userIsAssignedRoleOrgPair(appUser.getRoles(), roleId);
+        RoleDto role = userIsAssignedRoleOrgPair(appUser.getRoles(), roleId);
         if(role != null) {
-            appUser.setAuthorities(role.getPermissions());
+            appUser.setAuthorities(role.getRole().getPermissions());
+            appUser.setSelectedRole(role);
         } else {
             throw new IllegalAccessException("User does not have access to role at org");
         }
@@ -61,7 +61,7 @@ public class AuthenticationService {
     }
 
     private String generateJwtToken(UserDto appUser) {
-        UserPrinciple userPrinciple = new UserPrinciple(appUser, null);
+        UserPrinciple userPrinciple = new UserPrinciple(appUser);
         return jwtService.generateJwt(userPrinciple);
     }
 
@@ -92,10 +92,10 @@ public class AuthenticationService {
         return authHeader.split("Bearer ")[1];
     }
 
-    private ROLE userIsAssignedRoleOrgPair(Set<RoleDto> roles, long roleId) {
+    private RoleDto userIsAssignedRoleOrgPair(Set<RoleDto> roles, long roleId) {
         for(RoleDto index : roles) {
             if(index.getId() == roleId) {
-                return index.getRole();
+                return index;
             }
         }
         return null;

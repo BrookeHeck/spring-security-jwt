@@ -32,4 +32,5 @@ public class UserDto implements Serializable {
     private LocalDateTime lastPasswordUpdate;
     private LocalDateTime dateJoined;
     private USER_STATUS status;
+    private RoleDto selectedRole;
 }
