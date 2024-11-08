@@ -1,8 +1,6 @@
 package com.games.flashcard.service.impl;
 
 import com.games.flashcard.model.dtos.RoleDto;
-import com.games.flashcard.model.entities.AppUser;
-import com.games.flashcard.model.entities.Organization;
 import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.repository.RoleRepository;
@@ -22,7 +20,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto addNewRole(RoleDto roleDto) {
-        return null;
+        Role role = roleRepo.save(modelMapper.map(roleDto, Role.class));
+        return modelMapper.map(role, RoleDto.class);
     }
 
     @Override

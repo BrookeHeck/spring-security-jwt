@@ -23,6 +23,7 @@ public class MapperConfiguration {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         modelMapper.addConverter(flashcardListToFlashcardIds);
         modelMapper.addConverter(listRoleToRoleDto);
+        modelMapper.addConverter(roleDtoRoleConverter);
         return modelMapper;
     }
 
@@ -41,5 +42,16 @@ public class MapperConfiguration {
             return source.stream().map(Flashcard::getId).collect(Collectors.toList());
         }
     };
+
+    Converter<RoleDto, Role> roleDtoRoleConverter = new AbstractConverter<>() {
+        @Override
+        protected Role convert(RoleDto source) {
+            Organization organization = new Organization();
+            organization.setId(source.getOrganizationId());
+            AppUser appUser = new AppUser();
+            appUser.setId(source.getId());
+            return new Role(source.getId(), source.getRole(), appUser, organization);
+        }
+    }
 
 }
