@@ -1,10 +1,12 @@
 package com.games.flashcard.util;
 
 import com.games.flashcard.model.dtos.FlashcardDto;
+import com.games.flashcard.model.dtos.FlashcardSetDto;
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.entities.Flashcard;
+import com.games.flashcard.model.entities.FlashcardSet;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
@@ -26,6 +28,7 @@ public class MapperConfiguration {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         modelMapper.addConverter(appUserToUserDtoConverter);
         modelMapper.addConverter(flashcardToFlashcardDtoConverter);
+        modelMapper.addConverter(flashCardSetToFlashcardSetDtoConverter);
         return modelMapper;
     }
 
@@ -68,6 +71,16 @@ public class MapperConfiguration {
         }
     };
 
-
+    Converter<FlashcardSet, FlashcardSetDto> flashCardSetToFlashcardSetDtoConverter = new AbstractConverter<FlashcardSet, FlashcardSetDto>() {
+        @Override
+        protected FlashcardSetDto convert(FlashcardSet source) {
+            FlashcardSetDto dto = new FlashcardSetDto();
+            dto.setId(source.getId());
+            dto.setOrganizationId(source.getOrganization().getId());
+            Set<Long> flashcardIds = source.getFlashcards().stream().map(Flashcard::getId).collect(Collectors.toSet());
+            dto.setFlashcardIds(flashcardIds);
+            return dto;
+        }
+    };
 
 }
