@@ -51,7 +51,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleDto> findRolesByRole(ROLE role) {
-        return mapRoleRecordsToRoleDtos(roleRepo.findRolesByRole(role));
+        List<Role> roles = roleRepo.findRolesByRole(role);
+        return mapRoleRecordsToRoleDtos(roles);
     }
 
     @Override

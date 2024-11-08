@@ -24,15 +24,26 @@ public class MapperConfiguration {
         modelMapper.addConverter(flashcardListToFlashcardIds);
         modelMapper.addConverter(listRoleToRoleDto);
         modelMapper.addConverter(roleDtoRoleConverter);
+        modelMapper.addConverter(roleToRoleDto);
         return modelMapper;
+    }
+
+    private RoleDto getRoleDtoFromRoleRecord(Role role) {
+        return new RoleDto(role.getId(), role.getRole(), role.getOrganization().getId(),
+                role.getOrganization().getDisplayName(), role.getUser().getId());
     }
 
     Converter<Set<Role>, Set<RoleDto>> listRoleToRoleDto = new AbstractConverter<>() {
         @Override
         protected Set<RoleDto> convert(Set<Role> source) {
-            return source.stream().map(role -> new RoleDto(
-                    role.getId(), role.getRole(), role.getOrganization().getId(),
-                    role.getOrganization().getDisplayName(), role.getUser().getId())).collect(Collectors.toSet());
+            return source.stream().map(role -> getRoleDtoFromRoleRecord(role)).collect(Collectors.toSet());
+        }
+    };
+
+    Converter<Role, RoleDto> roleToRoleDto = new AbstractConverter<>() {
+        @Override
+        protected RoleDto convert(Role source) {
+            return getRoleDtoFromRoleRecord(source);
         }
     };
 
@@ -49,7 +60,7 @@ public class MapperConfiguration {
             Organization organization = new Organization();
             organization.setId(source.getOrganizationId());
             AppUser appUser = new AppUser();
-            appUser.setId(source.getId());
+            appUser.setId(source.getUserId());
             return new Role(source.getId(), source.getRole(), appUser, organization);
         }
     };

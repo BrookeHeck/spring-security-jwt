@@ -1,12 +1,10 @@
 package com.games.flashcard.resource;
 
-import com.games.flashcard.model.dtos.Response;
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
