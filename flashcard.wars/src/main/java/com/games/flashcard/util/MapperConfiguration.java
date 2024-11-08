@@ -1,8 +1,10 @@
 package com.games.flashcard.util;
 
+import com.games.flashcard.model.dtos.FlashcardDto;
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
+import com.games.flashcard.model.entities.Flashcard;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
@@ -18,7 +20,16 @@ import java.util.stream.Collectors;
 @Configuration
 @RequiredArgsConstructor
 public class MapperConfiguration {
-    Converter<AppUser, UserDto> appUserUserDtoConverter = new AbstractConverter<>() {
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.addConverter(appUserToUserDtoConverter);
+        modelMapper.addConverter(flashcardToFlashcardDtoConverter);
+        return modelMapper;
+    }
+
+    Converter<AppUser, UserDto> appUserToUserDtoConverter = new AbstractConverter<>() {
         @Override
         protected UserDto convert(AppUser source) {
             UserDto dto = new UserDto();
@@ -44,11 +55,19 @@ public class MapperConfiguration {
         }
     };
 
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        modelMapper.addConverter(appUserUserDtoConverter);
-        return modelMapper;
-    }
+    Converter<Flashcard, FlashcardDto> flashcardToFlashcardDtoConverter = new AbstractConverter<>() {
+        @Override
+        protected FlashcardDto convert(Flashcard source) {
+            FlashcardDto dto = new FlashcardDto();
+            dto.setId(source.getId());
+            dto.setQuestion(source.getQuestion());
+            dto.setAnswer(source.getAnswer());
+            dto.setPoints(source.getPoints());
+            dto.setFlashcardSetId(source.getFlashcardSet().getId());
+            return dto;
+        }
+    };
+
+
+
 }
