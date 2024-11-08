@@ -6,13 +6,13 @@ import com.games.flashcard.model.enums.ROLE;
 import java.util.List;
 
 public interface RoleService {
-    RoleDto addNewRole(long userId, long organizationId, ROLE role);
+    RoleDto addNewRole(RoleDto roleDto);
 
     boolean deleteRoleById(long roleId);
 
-    boolean deleteRoleByUserId(long userId);
+    boolean deleteRolesByUserId(long userId);
 
-    boolean deleteRoleByOrganizationId(long organizationId);
+    boolean deleteRolesByOrganizationId(long organizationId);
 
     List<RoleDto> findRolesByUserId(long userId);
 

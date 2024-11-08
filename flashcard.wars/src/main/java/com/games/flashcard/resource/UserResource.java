@@ -1,9 +1,6 @@
 package com.games.flashcard.resource;
 
-import com.games.flashcard.auth.SecurityConstants;
-import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.enums.PERMISSION;
-import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
