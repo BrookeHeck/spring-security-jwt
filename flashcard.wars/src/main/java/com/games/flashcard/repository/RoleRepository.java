@@ -11,6 +11,10 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     boolean deleteRoleById(long id);
 
+    boolean deleteRolesByUserId(long userId);
+
+    boolean deleteRolesByOrganizationId(long organizationId);
+
     List<Role> findRolesByUserId(long userId);
 
     List<Role> findRolesByOrganizationId(long organizationId);
