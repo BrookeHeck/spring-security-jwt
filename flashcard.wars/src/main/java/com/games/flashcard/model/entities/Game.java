@@ -23,7 +23,12 @@ public class Game {
     @OneToOne
     @JoinColumn(name = "moderator")
     private AppUser moderator;
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "game_flashcard_set",
+            joinColumns = @JoinColumn(name = "flashcard_set_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
     private Set<FlashcardSet> flashcardSets;
     private int teamOnePoints;
     private int teamTwoPoints;

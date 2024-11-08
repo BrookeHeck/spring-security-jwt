@@ -19,6 +19,8 @@ public class FlashcardSet {
     private long id;
     @OneToOne
     private Organization organization;
-    @OneToMany(mappedBy = "flashcardSet")
+    @OneToMany(mappedBy = "flashcardSet", fetch = FetchType.LAZY)
     Set<Flashcard> flashcards;
+    @ManyToMany(mappedBy = "flashcardSets")
+    Set<Game> games;
 }

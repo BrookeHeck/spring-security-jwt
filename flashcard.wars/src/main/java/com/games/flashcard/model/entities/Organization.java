@@ -17,8 +17,5 @@ public class Organization {
     private long id;
     private String displayName;
     private long organizationCode;
-    @ManyToOne
-    @JoinColumn(name = "adminUserId")
-    private AppUser adminUser;
 
 }
