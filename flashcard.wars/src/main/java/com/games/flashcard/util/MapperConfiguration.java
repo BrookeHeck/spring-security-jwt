@@ -61,7 +61,7 @@ public class MapperConfiguration {
             organization.setId(source.getOrganizationId());
             AppUser appUser = new AppUser();
             appUser.setId(source.getUserId());
-            return new Role(source.getId(), source.getRole(), appUser, organization);
+            return new Role(source.getId(), source.getRole(), appUser, organization, null);
         }
     };
 

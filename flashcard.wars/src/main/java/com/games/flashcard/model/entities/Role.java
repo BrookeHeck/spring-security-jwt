@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -26,4 +28,6 @@ public class Role implements Serializable {
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private Organization organization;
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
 }
