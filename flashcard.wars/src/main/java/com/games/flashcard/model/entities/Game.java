@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -17,12 +19,16 @@ public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @CreationTimestamp
+    LocalDateTime dateStarted;
+    private String gameIdentifier;
     @OneToOne
     @JoinColumn(name = "organizationId")
     private Organization organizationId;
     @OneToOne
-    @JoinColumn(name = "moderator")
-    private AppUser moderator;
+    private AppUser teamOneCaptain;
+    @OneToOne
+    private AppUser teamTwoCaptain;
     @ManyToMany
     @JoinTable(
             name = "game_flashcard_set",
@@ -30,8 +36,9 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private Set<FlashcardSet> flashcardSets;
-    private int teamOnePoints;
-    private int teamTwoPoints;
+    private int teamOnePoints = 0;
+    private int teamTwoPoints = 0;
+    private boolean completed = false;
 
 
 
