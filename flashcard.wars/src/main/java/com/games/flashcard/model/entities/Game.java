@@ -23,8 +23,8 @@ public class Game {
     LocalDateTime dateStarted;
     private String gameIdentifier;
     @OneToOne
-    @JoinColumn(name = "organizationId")
-    private Organization organizationId;
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
     @OneToOne
     private AppUser teamOneCaptain;
     @OneToOne

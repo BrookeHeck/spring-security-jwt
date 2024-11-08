@@ -16,6 +16,6 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String displayName;
-    private long organizationCode;
+    private String organizationCode;
 
 }
