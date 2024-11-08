@@ -4,16 +4,20 @@ import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role findRoleById(long id);
 
-    boolean deleteById(long id);
+    boolean deleteRoleById(long id);
 
-    Role findRoleByUserId(long userId);
+    List<Role> findRolesByUserId(long userId);
 
-    Role findRoleByOrganizationId(long organizationId);
+    List<Role> findRolesByOrganizationId(long organizationId);
 
-    Role findRoleByRole(ROLE role);
+    List<Role> findRolesByRole(ROLE role);
 
-    Role findRoleByRoleAndOrganizationId(ROLE role, long organizationId);
+    List<Role> findRolesByRoleAndOrganizationId(ROLE role, long organizationId);
+
+
 }
