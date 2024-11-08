@@ -52,6 +52,6 @@ public class MapperConfiguration {
             appUser.setId(source.getId());
             return new Role(source.getId(), source.getRole(), appUser, organization);
         }
-    }
+    };
 
 }
