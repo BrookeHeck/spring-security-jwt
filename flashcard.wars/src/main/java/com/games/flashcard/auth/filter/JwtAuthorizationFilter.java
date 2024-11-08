@@ -1,7 +1,11 @@
 package com.games.flashcard.auth.filter;
 
 import com.games.flashcard.auth.SecurityConstants;
+import com.games.flashcard.auth.UserPrinciple;
 import com.games.flashcard.auth.service.JwtService;
+import com.games.flashcard.model.entities.Role;
+import com.games.flashcard.model.enums.PERMISSION;
+import com.games.flashcard.model.enums.ROLE;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +19,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 

@@ -1,15 +1,17 @@
 package com.games.flashcard.model.dtos;
 
-import com.games.flashcard.model.entities.Role;
-import com.games.flashcard.model.enums.ROLE;
+import com.games.flashcard.model.enums.PERMISSION;
+import com.games.flashcard.model.enums.USER_STATUS;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,9 +25,12 @@ public class UserDto implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private Role role;
-    private List<ROLE> roles;
+    private Set<RoleDto> roles;
+    private List<PERMISSION> authorities = new ArrayList<>();
     private String profileImageUrl;
-    private LocalDate lastLoginDate;
-    private LocalDate dateJoined;
+    private LocalDateTime lastLoginDate;
+    private LocalDateTime lastPasswordUpdate;
+    private LocalDateTime dateJoined;
+    private USER_STATUS status;
+    private RoleDto selectedRole;
 }

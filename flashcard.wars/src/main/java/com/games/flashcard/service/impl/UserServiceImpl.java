@@ -4,13 +4,13 @@ import com.games.flashcard.exception.domain.EmailExistsException;
 import com.games.flashcard.exception.domain.UsernameExistsException;
 import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
-import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.games.flashcard.model.enums.USER_STATUS;
@@ -33,11 +33,13 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
+    private final ModelMapper modelMapper;
 
     @Override
-    public AppUser findUserByUsernameOrEmail(String usernameOrEmail) {
-        return userRepo.findAppUserByUsernameOrEmail(usernameOrEmail)
+    public UserDto findUserByUsernameOrEmail(String usernameOrEmail) {
+        AppUser user = userRepo.findAppUserByUsernameOrEmail(usernameOrEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + usernameOrEmail));
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser registerUser(UserDto userDto, String password) throws UsernameExistsException, EmailExistsException {
+    public UserDto registerUser(UserDto userDto, String password) throws UsernameExistsException, EmailExistsException {
         String username = userDto.getUsername();
         if(StringUtils.isBlank(username) || userNameAlreadyExists(username))
             throw new UsernameExistsException(username + " is already being used.");
@@ -66,9 +68,8 @@ public class UserServiceImpl implements UserService {
             throw new EmailExistsException(email + " is already being used.");
         if(StringUtils.isBlank(userDto.getFirstName()) || StringUtils.isBlank(userDto.getFirstName()))
             throw new NullPointerException("Name cannot be blank on registration.");
-        if(userDto.getRole() == null) throw new NullPointerException("A role is needed for registration.");
         AppUser appUser = createNewAppUser(userDto, password);
-        return userRepo.save(appUser);
+        return modelMapper.map(userRepo.save(appUser), UserDto.class);
     }
 
     @Override
@@ -107,7 +108,6 @@ public class UserServiceImpl implements UserService {
         appUser.setPassword(password);
         appUser.setUsername(userDto.getUsername());
         appUser.setLastPasswordUpdate(LocalDateTime.now());
-        appUser.setAuthorities(userDto.getRole().getRole().getPermissions());
         appUser.setProfileImageUrl(getTemporaryProfileImageUrl(userDto.getUsername()));
         appUser.setFirstName(userDto.getFirstName());
         appUser.setLastName(userDto.getLastName());

@@ -5,22 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Set;
 
-@Getter
+@Entity
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Organization implements Serializable {
+public class FlashcardSet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String displayName;
-    private String organizationCode;
-    @CreationTimestamp
-    private LocalDateTime dateCreated;
+    @OneToOne
+    private Organization organization;
+    @OneToMany(mappedBy = "flashcardSet", fetch = FetchType.LAZY)
+    Set<Flashcard> flashcards;
+    @ManyToMany(mappedBy = "flashcardSets", fetch = FetchType.LAZY)
+    Set<Game> games;
 }
