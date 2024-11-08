@@ -7,15 +7,18 @@ import com.games.flashcard.model.dtos.UserDto;
 import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.model.entities.Flashcard;
 import com.games.flashcard.model.entities.FlashcardSet;
+import com.games.flashcard.model.entities.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,60 +29,23 @@ public class MapperConfiguration {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        modelMapper.addConverter(appUserToUserDtoConverter);
-        modelMapper.addConverter(flashcardToFlashcardDtoConverter);
-        modelMapper.addConverter(flashCardSetToFlashcardSetDtoConverter);
+        modelMapper.addConverter(flashcardListToFlashcardIds);
         return modelMapper;
     }
 
-    Converter<AppUser, UserDto> appUserToUserDtoConverter = new AbstractConverter<>() {
+    Converter<Set<Role>, Set<RoleDto>> listRoleToRoleDto = new AbstractConverter<>() {
         @Override
-        protected UserDto convert(AppUser source) {
-            UserDto dto = new UserDto();
-            dto.setId(source.getId());
-            dto.setUserId(source.getUserId());
-            dto.setUsername(source.getUsername());
-            dto.setPassword(source.getPassword());
-            dto.setEmail(source.getEmail());
-            dto.setFirstName(source.getFirstName());
-            dto.setLastName(source.getLastName());
-            dto.setProfileImageUrl(source.getProfileImageUrl());
-            dto.setLastLoginDate(source.getLastLoginDate());
-            dto.setDateJoined(source.getDateJoined());
-            dto.setLastPasswordUpdate(source.getLastLoginDate());
-            dto.setStatus(source.getStatus());
-            dto.setAuthorities(source.getAuthorities() == null ? new ArrayList<>() : source.getAuthorities());
-            Set<RoleDto> roleDtos = source.getRoles().stream().map(role -> new RoleDto(
-                            role.getId(), role.getRole(), role.getOrganization().getId(),
-                            role.getOrganization().getDisplayName(), source.getId()))
-                    .collect(Collectors.toSet());
-            dto.setRoles(roleDtos);
-            return dto;
+        protected Set<RoleDto> convert(Set<Role> source) {
+            return source.stream().map(role -> new RoleDto(
+                    role.getId(), role.getRole(), role.getOrganization().getId(),
+                    role.getOrganization().getDisplayName(), role.getUser().getId())).collect(Collectors.toSet());
         }
     };
 
-    Converter<Flashcard, FlashcardDto> flashcardToFlashcardDtoConverter = new AbstractConverter<>() {
+    Converter<List<Flashcard>, List<Long>> flashcardListToFlashcardIds = new AbstractConverter<>() {
         @Override
-        protected FlashcardDto convert(Flashcard source) {
-            FlashcardDto dto = new FlashcardDto();
-            dto.setId(source.getId());
-            dto.setQuestion(source.getQuestion());
-            dto.setAnswer(source.getAnswer());
-            dto.setPoints(source.getPoints());
-            dto.setFlashcardSetId(source.getFlashcardSet().getId());
-            return dto;
-        }
-    };
-
-    Converter<FlashcardSet, FlashcardSetDto> flashCardSetToFlashcardSetDtoConverter = new AbstractConverter<FlashcardSet, FlashcardSetDto>() {
-        @Override
-        protected FlashcardSetDto convert(FlashcardSet source) {
-            FlashcardSetDto dto = new FlashcardSetDto();
-            dto.setId(source.getId());
-            dto.setOrganizationId(source.getOrganization().getId());
-            Set<Long> flashcardIds = source.getFlashcards().stream().map(Flashcard::getId).collect(Collectors.toSet());
-            dto.setFlashcardIds(flashcardIds);
-            return dto;
+        protected List<Long> convert(List<Flashcard> source) {
+            return source.stream().map(Flashcard::getId).collect(Collectors.toList());
         }
     };
 

@@ -11,6 +11,7 @@ import com.games.flashcard.model.enums.USER_STATUS;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +40,7 @@ public class AppUser implements Serializable {
     @Enumerated(EnumType.STRING)
     private USER_STATUS status;
     @Transient
-    private List<PERMISSION> authorities;
+    private List<PERMISSION> authorities = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private Set<Role> roles;
 }
