@@ -2,11 +2,14 @@ package com.games.flashcard.util;
 
 import com.games.flashcard.model.enums.PERMISSION;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.games.flashcard.model.enums.PERMISSION.*;
+
 public class RolePermissions {
+   public static final List<PERMISSION> SUPER_PERMISSIONS = getSuperPermissions();
+
    public static final List<PERMISSION> ADMIN_PERMISSIONS = Arrays.stream(PERMISSION.values()).toList();
 
     public static final List<PERMISSION> TEACHER_PERMISSIONS = getTeacherPermissions();
@@ -19,40 +22,29 @@ public class RolePermissions {
         permissions.addAll(permissionsToAdd);
     }
 
-    private static List<PERMISSION> getStudentPermissions() {
-        List<PERMISSION> permissions = new ArrayList<>();
-        permissions.add(PERMISSION.CREATE_FLASHCARD_QUESTIONS);
-        permissions.add(PERMISSION.VIEW_FLASHCARD_QUESTIONS);
-        return permissions;
+    private static List<PERMISSION> getSuperPermissions() {
+        return List.of(MANAGE_ORGANIZATION, MANAGE_ORGANIZATION_ADMINS);
     }
 
-    private static List<PERMISSION> getTeacherAssistantPermissions() {
-        List<PERMISSION> permissions = new ArrayList<>();
-        addLowerPermissionsToPermissionArray(permissions, getStudentPermissions());
-        permissions.add(PERMISSION.DELETE_FLASHCARD_QUESTIONS);
-        permissions.add(PERMISSION.EDIT_FLASHCARD_QUESTIONS);
-        permissions.add(PERMISSION.CREATE_STUDENT_PROFILES);
-        permissions.add(PERMISSION.VIEW_STUDENT_PROFILES);
-        permissions.add(PERMISSION.DELETE_STUDENT_PROFILES);
-        permissions.add(PERMISSION.CREATE_GROUP);
-        permissions.add(PERMISSION.VIEW_GROUP);
-        permissions.add(PERMISSION.EDIT_GROUP);
-        permissions.add(PERMISSION.DELETE_GROUP);
-        return permissions;
+    private static List<PERMISSION> getAdminPermissions() {
+        return List.of(EDIT_ORGANIZATION_DETAILS, ADD_DELETE_TEACHER,
+                ADD_DELETE_TEACHER_ASSISTANT, ACCEPT_STUDENT_ACCESS_REQUEST);
     }
 
     private static List<PERMISSION> getTeacherPermissions() {
-        List<PERMISSION> permissions = new ArrayList<>();
-        addLowerPermissionsToPermissionArray(permissions, getStudentPermissions());
-        addLowerPermissionsToPermissionArray(permissions, getTeacherAssistantPermissions());
-        permissions.add(PERMISSION.VIEW_TEACHER_ASSISTANT_PROFILES);
-        permissions.add(PERMISSION.EDIT_TEACHER_ASSISTANT_PROFILES);
-        permissions.add(PERMISSION.CREATE_TEACHER_ASSISTANT_PROFILES);
-        permissions.add(PERMISSION.DELETE_TEACHER_ASSISTANT_PROFILES);
-        permissions.add(PERMISSION.VIEW_ORGANIZATION);
-        permissions.add(PERMISSION.EDIT_ORGANIZATION);
-        permissions.add(PERMISSION.CREATE_ORGANIZATION);
-        permissions.add(PERMISSION.DELETE_ORGANIZATION);
-        return permissions;
+        return List.of(ACCEPT_STUDENT_ACCESS_REQUEST, ADD_DELETE_TEACHER_ASSISTANT,
+                DELETE_STUDENT_ACCOUNT, CREATE_FLASHCARD,
+                DELETE_FLASHCARD, CREATE_FLASHCARD_SET,
+                DELETE_FLASHCARD_SSET, START_STOP_GAME);
     }
+
+    private static List<PERMISSION> getTeacherAssistantPermissions() {
+        return List.of(CREATE_FLASHCARD_SET, DELETE_FLASHCARD_SSET,
+                CREATE_FLASHCARD, DELETE_FLASHCARD, START_STOP_GAME);
+    }
+
+    private static List<PERMISSION> getStudentPermissions() {
+        return List.of(START_STOP_GAME);
+    }
+
 }
