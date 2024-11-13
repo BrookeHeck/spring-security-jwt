@@ -23,13 +23,27 @@ public class RoleResource {
 
     @PostMapping(value = "create-organization-admin")
     @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION_ADMINS')")
-    private ResponseEntity<RoleDto> addOrganizationAdmin(@RequestBody  @Validated RoleDto roleDto) {
+    public ResponseEntity<RoleDto> addOrganizationAdmin(@RequestBody  @Validated RoleDto roleDto) {
         return new ResponseEntity<>(roleService.addNewRole(roleDto), CREATED);
     }
 
     @GetMapping(value = "get-all-organization-admins")
     @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION_ADMINS')")
-    private ResponseEntity<List<RoleDto>> getAllOrganizationAdmins() {
+    public ResponseEntity<List<RoleDto>> getAllOrganizationAdmins() {
         return new ResponseEntity<>(roleService.findRolesByRole(ROLE.ADMIN), OK);
+    }
+
+    @DeleteMapping("delete-role/{roleId}")
+//    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION_ADMINS')")
+    public ResponseEntity<Boolean> deleteOrganizationAdminByRoleId(@PathVariable long roleId) {
+        return new ResponseEntity<>(roleService.deleteRoleById(roleId), OK);
+    }
+
+    @PostMapping("cr")
+
+    @PostMapping(value = "create-organization-teacher-assistant")
+    @PreAuthorize("hasAuthority('ADD_DELETE_TEACHER_ASSISTANT')")
+    public ResponseEntity<RoleDto> addOrganizationTeacherAssistant(@RequestBody @Validated RoleDto roleDto) {
+        return new ResponseEntity<>(roleService.addNewRole(roleDto), CREATED);
     }
 }
