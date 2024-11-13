@@ -11,7 +11,7 @@ import java.util.*;
 @Component("authorization")
 public class MethodSecurityService {
     public boolean userCanEditRoleAtOrg(MethodSecurityExpressionOperations root, long orgId, ROLE role) {
-        Authentication authentication = (Authentication) root.getAuthentication();
+        Authentication authentication = root.getAuthentication();
         List<String> authorities = authentication.getAuthorities().stream().map(Object::toString).toList();
         return userHasAuthorityAtOrg(orgId, authorities) && userCanEditRole(authorities, role);
     }
