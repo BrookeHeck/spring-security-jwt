@@ -12,10 +12,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PreAuthorizeService {
-    private boolean userIsAssignedRoleAtOrganization(RoleDto role, long organizationId) {
-        return role.getOrganizationId() == organizationId;
+    public boolean userCanEditRoleAtOrganization(UserPrinciple userPrinciple, long orgId, ROLE role) {
+        RoleDto selectedRole = userPrinciple.getAppUser().getSelectedRole();
+        return userIsAssignedRoleAtOrganization(selectedRole, orgId) &&
+                userCanEditRole(selectedRole.getRole().getPermissions(), role);
     }
 
+    private boolean userIsAssignedRoleAtOrganization(RoleDto role, long organizationId) {
+        return role.getRole() == ROLE.SUPER || role.getOrganizationId() == organizationId;
+    }
 
     private boolean userCanEditRole(List<PERMISSION> permissions, ROLE role) {
         return switch (role) {
