@@ -1,5 +1,6 @@
 package com.games.flashcard.service;
 
+import com.games.flashcard.model.dtos.OrganizationDto;
 import com.games.flashcard.model.entities.Organization;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface OrganizationService {
     Organization findOrganizationByOrganizationCode(String code);
 
     boolean updateOrganizationDisplayName(String displayName, long orgId);
+
+    Organization createOrganization(OrganizationDto organizationDto);
+
+    void deleteOrganizationById(long orgId);
 }
