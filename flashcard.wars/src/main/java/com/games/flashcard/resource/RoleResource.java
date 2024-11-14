@@ -29,8 +29,15 @@ public class RoleResource {
 
     @PostMapping(value = "create-role")
     @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #roleDto.organizationId, #roleDto.role)")
-    public ResponseEntity<RoleDto> createOrganizationAdmin(@RequestBody  @Validated RoleDto roleDto) {
+    public ResponseEntity<RoleDto> createRole(@RequestBody  @Validated RoleDto roleDto) {
         return new ResponseEntity<>(roleService.addNewRole(roleDto), CREATED);
+    }
+
+    @DeleteMapping(value = "delete-role")
+    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #roleDto.organizationId, #roleDto.role)")
+    public ResponseEntity<Boolean> deleteRole(@RequestBody @Validated RoleDto roleDto) {
+        roleService.deleteRoleById(roleDto.getId());
+        return new ResponseEntity<>(true, OK);
     }
 
 

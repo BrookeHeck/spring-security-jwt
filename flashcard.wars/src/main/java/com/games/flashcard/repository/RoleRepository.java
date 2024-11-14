@@ -11,7 +11,7 @@ import java.util.List;
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role findRoleById(long id);
 
-    boolean deleteRoleById(long id);
+    void deleteById(long id);
 
     boolean deleteRolesByUserId(long userId);
 
