@@ -2,7 +2,6 @@ package com.games.flashcard.listener;
 
 import com.games.flashcard.auth.UserPrinciple;
 import com.games.flashcard.model.dtos.UserDto;
-import com.games.flashcard.model.entities.AppUser;
 import com.games.flashcard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,7 @@ public class AuthenticationSuccessListener {
     public void onAuthenticationSuccess(AuthenticationSuccessEvent authenticationSuccessEvent) {
         Object principle = authenticationSuccessEvent.getAuthentication().getPrincipal();
         if(principle instanceof UserPrinciple userPrinciple) {
-            UserDto user = userPrinciple.getAppUser();
+            UserDto user = userPrinciple.appUser();
             loginAttemptService.evictUserFromLoginAttemptCache(user.getUsername());
             loginAttemptService.evictUserFromLoginAttemptCache(user.getEmail());
             userService.updateUserLastLoginToNow(user.getId());

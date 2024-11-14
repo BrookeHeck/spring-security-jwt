@@ -20,16 +20,25 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 public class RoleResource {
     private final RoleService roleService;
+    @GetMapping(value = "get-all-role-users-organization/{orgId}/{role}")
+    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #orgId, #role)")
+    public ResponseEntity<List<RoleDto>> getAllRoleUsersForOrganization(@PathVariable long orgId,
+                                                                        @PathVariable ROLE role) {
+        return new ResponseEntity<>(roleService.findRolesByRoleAndOrganizationId(role, orgId), OK);
+    }
 
-    @PostMapping(value = "create-organization-admin")
-    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION_ADMINS')")
-    private ResponseEntity<RoleDto> addOrganizationAdmin(@RequestBody  @Validated RoleDto roleDto) {
+    @PostMapping(value = "create-role")
+    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #roleDto.organizationId, #roleDto.role)")
+    public ResponseEntity<RoleDto> createRole(@RequestBody  @Validated RoleDto roleDto) {
         return new ResponseEntity<>(roleService.addNewRole(roleDto), CREATED);
     }
 
-    @GetMapping(value = "get-all-organization-admins")
-    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION_ADMINS')")
-    private ResponseEntity<List<RoleDto>> getAllOrganizationAdmins() {
-        return new ResponseEntity<>(roleService.findRolesByRole(ROLE.ADMIN), OK);
+    @DeleteMapping(value = "delete-role")
+    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #roleDto.organizationId, #roleDto.role)")
+    public ResponseEntity<Boolean> deleteRole(@RequestBody @Validated RoleDto roleDto) {
+        roleService.deleteRoleById(roleDto.getId());
+        return new ResponseEntity<>(true, OK);
     }
+
+
 }

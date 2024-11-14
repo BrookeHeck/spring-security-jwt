@@ -25,8 +25,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean deleteRoleById(long roleId) {
-        return roleRepo.deleteRoleById(roleId);
+    public void deleteRoleById(long roleId) {
+        roleRepo.deleteById(roleId);
     }
 
     @Override

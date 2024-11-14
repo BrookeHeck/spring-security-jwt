@@ -33,28 +33,28 @@ public class MapperConfiguration {
                 role.getOrganization().getDisplayName(), role.getUser().getId());
     }
 
-    Converter<Set<Role>, Set<RoleDto>> listRoleToRoleDto = new AbstractConverter<>() {
+    private final Converter<Set<Role>, Set<RoleDto>> listRoleToRoleDto = new AbstractConverter<>() {
         @Override
         protected Set<RoleDto> convert(Set<Role> source) {
             return source.stream().map(role -> getRoleDtoFromRoleRecord(role)).collect(Collectors.toSet());
         }
     };
 
-    Converter<Role, RoleDto> roleToRoleDto = new AbstractConverter<>() {
+    private final Converter<Role, RoleDto> roleToRoleDto = new AbstractConverter<>() {
         @Override
         protected RoleDto convert(Role source) {
             return getRoleDtoFromRoleRecord(source);
         }
     };
 
-    Converter<List<Flashcard>, List<Long>> flashcardListToFlashcardIds = new AbstractConverter<>() {
+    private final Converter<List<Flashcard>, List<Long>> flashcardListToFlashcardIds = new AbstractConverter<>() {
         @Override
         protected List<Long> convert(List<Flashcard> source) {
             return source.stream().map(Flashcard::getId).collect(Collectors.toList());
         }
     };
 
-    Converter<RoleDto, Role> roleDtoRoleConverter = new AbstractConverter<>() {
+    private final Converter<RoleDto, Role> roleDtoRoleConverter = new AbstractConverter<>() {
         @Override
         protected Role convert(RoleDto source) {
             Organization organization = new Organization();
