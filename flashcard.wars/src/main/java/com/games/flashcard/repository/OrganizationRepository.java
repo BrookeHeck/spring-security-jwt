@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface OrganizationResource extends JpaRepository<Organization, Long> {
+public interface OrganizationRepository extends JpaRepository<Organization, Long> {
     Organization findOrganizationById(long id);
 
     @Query("select o from Organization o")
