@@ -28,7 +28,7 @@ public class RoleResource {
     }
 
     @PostMapping(value = "create-role")
-    @PreAuthorize("authorization.userCanEditRoleAtOrg(#root, #roleDto.organizationId, #roleDto.role)")
+    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #roleDto.organizationId, #roleDto.role)")
     public ResponseEntity<RoleDto> createOrganizationAdmin(@RequestBody  @Validated RoleDto roleDto) {
         return new ResponseEntity<>(roleService.addNewRole(roleDto), CREATED);
     }
