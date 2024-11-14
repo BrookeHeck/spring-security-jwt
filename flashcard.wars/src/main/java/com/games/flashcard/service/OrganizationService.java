@@ -11,5 +11,5 @@ public interface OrganizationService {
 
     Organization findOrganizationByOrganizationCode(String code);
 
-    boolean updateOrganizationDisplayName(String displayName);
+    boolean updateOrganizationDisplayName(String displayName, long orgId);
 }
