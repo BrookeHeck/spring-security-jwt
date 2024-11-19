@@ -1,7 +1,6 @@
 package com.games.flashcard.service;
 
 import com.games.flashcard.model.dtos.NewOrganizationRequestDto;
-import com.games.flashcard.model.dtos.OrganizationDto;
 import com.games.flashcard.model.entities.StudentAccessRequest;
 
 import java.util.List;
