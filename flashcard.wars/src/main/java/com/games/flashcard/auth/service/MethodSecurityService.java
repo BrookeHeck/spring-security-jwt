@@ -17,8 +17,8 @@ public class MethodSecurityService {
     }
 
     private boolean userHasAuthorityAtOrg(long orgId, List<String> authorities) {
-        return authorities.stream().anyMatch(authority -> Long.toString(orgId).equals(authority)
-                || authority.equals(ROLE.SUPER.toString()));
+        return authorities.stream().anyMatch(authority -> authority.equals(ROLE.SUPER.toString()) ||
+                Long.toString(orgId).equals(authority));
     }
 
     private boolean userCanEditRole(List<String> permissions, ROLE role) {
