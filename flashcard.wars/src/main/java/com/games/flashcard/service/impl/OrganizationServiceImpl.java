@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,18 +17,19 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationRepository orgRepo;
     private final ModelMapper modelMapper;
     @Override
-    public Organization findOrganizationById(long orgId) {
-        return orgRepo.findOrganizationById(orgId);
+    public OrganizationDto findOrganizationById(long orgId) {
+        return modelMapper.map(orgRepo.findOrganizationById(orgId), OrganizationDto.class);
     }
 
     @Override
-    public List<Organization> findAllOrganizations() {
-        return orgRepo.findAllOrganizations();
+    public List<OrganizationDto> findAllOrganizations() {
+        return orgRepo.findAllOrganizations().stream().map(org -> modelMapper.map(org, OrganizationDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Organization findOrganizationByOrganizationCode(String code) {
-        return orgRepo.findOrganizationByOrganizationCode(code);
+    public OrganizationDto findOrganizationByOrganizationCode(String code) {
+        return modelMapper.map(orgRepo.findOrganizationByOrganizationCode(code), OrganizationDto.class);
     }
 
     @Override
@@ -36,9 +38,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization createOrganization(OrganizationDto organizationDto) {
+    public OrganizationDto createOrganization(OrganizationDto organizationDto) {
         Organization organization = modelMapper.map(organizationDto, Organization.class);
-        return orgRepo.save(organization);
+        return modelMapper.map(orgRepo.save(organization), OrganizationDto.class);
     }
 
     @Override
