@@ -3,6 +3,7 @@ package com.games.flashcard.repository;
 import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,7 +16,9 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     boolean deleteRolesByUserId(long userId);
 
-    boolean deleteRolesByOrganizationId(long organizationId);
+    @Modifying
+    @Query("delete Role r where r.organization.id = :ORG_ID")
+    void deleteRolesByOrganizationId(@Param("ORG_ID") long organizationId);
 
     List<Role> findRolesByUserId(long userId);
 
@@ -25,6 +28,5 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Query("select r from Role r where r.role=:ROLE and r.organization.id=:ORG_ID")
     List<Role> findRolesByRoleAndOrganizationId(@Param("ROLE") ROLE role, @Param("ORG_ID") long organizationId);
-
 
 }

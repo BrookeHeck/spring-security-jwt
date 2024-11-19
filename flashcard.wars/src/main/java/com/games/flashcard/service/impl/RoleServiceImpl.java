@@ -5,6 +5,7 @@ import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.repository.RoleRepository;
 import com.games.flashcard.service.RoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepo;
@@ -35,8 +37,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean deleteRolesByOrganizationId(long organizationId) {
-        return roleRepo.deleteRolesByOrganizationId(organizationId);
+    public void deleteRolesByOrganizationId(long organizationId) {
+        roleRepo.deleteRolesByOrganizationId(organizationId);
     }
 
     @Override

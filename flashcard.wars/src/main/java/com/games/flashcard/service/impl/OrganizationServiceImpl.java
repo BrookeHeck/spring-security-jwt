@@ -4,6 +4,8 @@ import com.games.flashcard.model.dtos.OrganizationDto;
 import com.games.flashcard.model.entities.Organization;
 import com.games.flashcard.repository.OrganizationRepository;
 import com.games.flashcard.service.OrganizationService;
+import com.games.flashcard.service.RoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -13,10 +15,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationRepository orgRepo;
     private final ModelMapper modelMapper;
+    private final RoleService roleService;
     @Override
     public OrganizationDto findOrganizationById(long orgId) {
         return modelMapper.map(orgRepo.findOrganizationById(orgId), OrganizationDto.class);
@@ -47,6 +51,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void deleteOrganizationById(long orgId) {
+        roleService.deleteRolesByOrganizationId(orgId);
         orgRepo.deleteById(orgId);
     }
 
