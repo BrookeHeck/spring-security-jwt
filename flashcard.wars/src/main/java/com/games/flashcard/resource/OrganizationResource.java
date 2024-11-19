@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping(value = "organization")
@@ -20,7 +20,14 @@ public class OrganizationResource {
     @PostMapping(value = "create-organization")
     @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION')")
     public ResponseEntity<OrganizationDto> createOrganization(@RequestBody @Validated OrganizationDto organizationDto) {
-        return null;
+        return new ResponseEntity<>(orgService.createOrganization(organizationDto), CREATED);
+    }
+
+    @DeleteMapping(value = "delete-organization/{orgId}")
+    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION')")
+    public ResponseEntity<Boolean> deleteOrganization(@PathVariable long orgId) {
+        orgService.deleteOrganizationById(orgId);
+        return new ResponseEntity<>(true, OK);
     }
 
 }
