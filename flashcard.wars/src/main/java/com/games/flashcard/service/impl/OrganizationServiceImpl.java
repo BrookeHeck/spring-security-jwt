@@ -5,6 +5,7 @@ import com.games.flashcard.model.entities.Organization;
 import com.games.flashcard.repository.OrganizationRepository;
 import com.games.flashcard.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public OrganizationDto createOrganization(OrganizationDto organizationDto) {
         Organization organization = modelMapper.map(organizationDto, Organization.class);
+        organization.setOrganizationCode(RandomStringUtils.randomAlphanumeric(10));
         return modelMapper.map(orgRepo.save(organization), OrganizationDto.class);
     }
 
