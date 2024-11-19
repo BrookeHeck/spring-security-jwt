@@ -2,6 +2,8 @@ package com.games.flashcard.service.impl;
 
 import com.games.flashcard.model.dtos.NewOrganizationRequestDto;
 import com.games.flashcard.model.dtos.StudentAccessRequestDto;
+import com.games.flashcard.model.entities.NewOrganizationRequest;
+import com.games.flashcard.model.entities.StudentAccessRequest;
 import com.games.flashcard.repository.NewOrganizationRequestRepository;
 import com.games.flashcard.repository.StudentAccessRequestRepository;
 import com.games.flashcard.service.AccessRequestService;
@@ -40,6 +42,12 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     }
 
     @Override
+    public NewOrganizationRequestDto createNewOrganizationRequest(NewOrganizationRequestDto requestDto) {
+        NewOrganizationRequest request = modelMapper.map(requestDto, NewOrganizationRequest.class);
+        return modelMapper.map(newOrganizationRequestRepo.save(request), NewOrganizationRequestDto.class);
+    }
+
+    @Override
     public List<StudentAccessRequestDto> getStudentAccessRequestsByOrganizationId(long orgId) {
         return studentAccessRequestRepo.findStudentAccessRequestByOrganizationId(orgId).stream()
                 .map(request -> modelMapper.map(request, StudentAccessRequestDto.class)).collect(Collectors.toList());
@@ -48,5 +56,11 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     @Override
     public void deleteStudentAccessRequestById(long requestId) {
         studentAccessRequestRepo.deleteStudentAccessRequestById(requestId);
+    }
+
+    @Override
+    public StudentAccessRequestDto createStudentAccessRequest(StudentAccessRequestDto requestDto) {
+        StudentAccessRequest request = modelMapper.map(requestDto, StudentAccessRequest.class);
+        return modelMapper.map(studentAccessRequestRepo.save(request), StudentAccessRequestDto.class);
     }
 }
