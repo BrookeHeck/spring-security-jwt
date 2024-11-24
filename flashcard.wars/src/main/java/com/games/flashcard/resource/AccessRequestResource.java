@@ -32,6 +32,13 @@ public class AccessRequestResource {
         return new ResponseEntity<>(accessRequestService.createNewOrganizationRequest(request), CREATED);
     }
 
+    @DeleteMapping(value = "deny-new-organization-request/{requestId}")
+    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION' and hasAuthority('SUPER'))")
+    public ResponseEntity<Boolean> denyNewOrganizationRequest(@PathVariable long requestId) {
+        accessRequestService.deleteNewOrganizationRequestById(requestId);
+        return new ResponseEntity<>(true, OK);
+    }
+
     @GetMapping(value = "get-student-access-requests/{orgId}")
     @PreAuthorize("hasAuthority('ACCEPT_STUDENT_ACCESS_REQUEST') and hasAuthority(#orgId)")
     public ResponseEntity<List<StudentAccessRequestDto>> getStudentAccessRequests(@PathVariable long orgId) {
@@ -41,5 +48,12 @@ public class AccessRequestResource {
     @PostMapping(value = "create-student-access-request")
     public ResponseEntity<StudentAccessRequestDto> createStudentAccessRequest(@RequestBody @Validated StudentAccessRequestDto request) {
         return new ResponseEntity<>(accessRequestService.createStudentAccessRequest(request), CREATED);
+    }
+
+    @DeleteMapping(value = "deny-student-access-request/{requestId}/{orgId}")
+    @PreAuthorize("hasAuthority('ACCEPT_STUDENT_ACCESS_REQUEST') and hasAuthority(#orgId)")
+    public ResponseEntity<Boolean> denyStudentAccessRequest(@PathVariable long requestId, @PathVariable long orgId) {
+        accessRequestService.deleteStudentAccessRequestById(requestId);
+        return new ResponseEntity<>(true, OK);
     }
 }
