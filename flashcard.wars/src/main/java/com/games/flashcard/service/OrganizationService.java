@@ -1,6 +1,7 @@
 package com.games.flashcard.service;
 
 import com.games.flashcard.model.dtos.OrganizationDto;
+import com.games.flashcard.model.query_models.OrganizationOverviewDetails;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface OrganizationService {
     OrganizationDto createOrganization(OrganizationDto organizationDto);
 
     void deleteOrganizationById(long orgId);
+
+    List<OrganizationOverviewDetails> getOrganizationOverviewDetails();
 }

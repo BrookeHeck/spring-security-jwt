@@ -2,6 +2,7 @@ package com.games.flashcard.service.impl;
 
 import com.games.flashcard.model.dtos.OrganizationDto;
 import com.games.flashcard.model.entities.Organization;
+import com.games.flashcard.model.query_models.OrganizationOverviewDetails;
 import com.games.flashcard.repository.OrganizationRepository;
 import com.games.flashcard.service.OrganizationService;
 import com.games.flashcard.service.RoleService;
@@ -53,6 +54,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     public void deleteOrganizationById(long orgId) {
         roleService.deleteRolesByOrganizationId(orgId);
         orgRepo.deleteById(orgId);
+    }
+
+    @Override
+    public List<OrganizationOverviewDetails> getOrganizationOverviewDetails() {
+        return orgRepo.getOrganizationOverviewDetails();
     }
 
 
