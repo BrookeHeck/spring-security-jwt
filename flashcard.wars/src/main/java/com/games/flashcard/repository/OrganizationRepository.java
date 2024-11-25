@@ -25,6 +25,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
             "sum(case when r.role = 'TEACHER' then 1 else 0 end), " +
             "sum(case when r.role = 'TEACHER_ASSISTANT' then 1 else 0 end), " +
             "sum(case when r.role = 'STUDENT' then 1 else 0 end)" +
-            "from Role r join Organization  o on r.organization = o where o.id = :ORG_ID")
+            "from Role r join Organization  o on r.organization = o")
     List<OrganizationOverviewDetails> getOrganizationOverviewDetails();
 }
