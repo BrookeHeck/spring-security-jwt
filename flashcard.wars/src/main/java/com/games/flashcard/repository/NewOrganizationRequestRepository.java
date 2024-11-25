@@ -1,7 +1,6 @@
 package com.games.flashcard.repository;
 
 import com.games.flashcard.model.entities.NewOrganizationRequest;
-import com.games.flashcard.model.entities.StudentAccessRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
