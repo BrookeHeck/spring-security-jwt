@@ -21,10 +21,12 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
     @Query("update Organization o set o.displayName=:DISPLAY_NAME where o.id = :ORG_ID")
     int updateOrganizationDisplayNameById(@Param("DISPLAY_NAME") String displayName, @Param("ORG_ID") long orgId);
 
-    @Query("select o.id, o.displayName, sum(case when r.role = 'ADMIN' then 1 else 0 end),  " +
+    @Query("select new com.games.flashcard.model.query_models.OrganizationOverviewDetails(" +
+            "o.id, o.displayName, o.dateCreated," +
+            "sum(case when r.role = 'ADMIN' then 1 else 0 end),  " +
             "sum(case when r.role = 'TEACHER' then 1 else 0 end), " +
             "sum(case when r.role = 'TEACHER_ASSISTANT' then 1 else 0 end), " +
-            "sum(case when r.role = 'STUDENT' then 1 else 0 end)" +
-            "from Role r join Organization  o on r.organization = o")
+            "sum(case when r.role = 'STUDENT' then 1 else 0 end))" +
+            "from Role r join Organization  o on r.organization = o group by o.id")
     List<OrganizationOverviewDetails> getOrganizationOverviewDetails();
 }

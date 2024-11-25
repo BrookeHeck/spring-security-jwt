@@ -4,6 +4,7 @@ import com.games.flashcard.model.entities.NewOrganizationRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,8 +15,8 @@ public interface NewOrganizationRequestRepository extends JpaRepository<NewOrgan
 
     @Modifying
     @Query("delete NewOrganizationRequest request where request.timeOfInsert > :THREE_MONTHS_AGO")
-    void deleteOldOrganizationRequests(LocalDateTime threeMonthsAgo);
+    void deleteOldOrganizationRequests(@Param("THREE_MONTHS_AGO") LocalDateTime threeMonthsAgo);
 
-    void deleteNewOrganizationRequestById(long orgId);
+    void deleteNewOrganizationRequestById(long requestId);
 
 }
