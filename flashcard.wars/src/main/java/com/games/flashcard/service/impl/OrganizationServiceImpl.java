@@ -60,6 +60,4 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<OrganizationOverviewDetails> getOrganizationOverviewDetails() {
         return orgRepo.getOrganizationOverviewDetails();
     }
-
-
 }

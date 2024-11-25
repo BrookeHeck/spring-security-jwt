@@ -1,6 +1,7 @@
 package com.games.flashcard.resource;
 
 import com.games.flashcard.model.dtos.OrganizationDto;
+import com.games.flashcard.model.query_models.OrganizationOverviewDetails;
 import com.games.flashcard.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,12 @@ public class OrganizationResource {
     @PreAuthorize("hasAuthority('EDIT_ORGANIZATION_DETAILS') and hasAuthority(#orgId)")
     public ResponseEntity<Boolean> updateOrganizationDisplayName(@PathVariable long orgId, @RequestBody String displayName) {
         return new ResponseEntity<>(orgService.updateOrganizationDisplayName(displayName, orgId), OK);
+    }
+
+    @GetMapping(value = "get-organization-overview-details")
+    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
+    public ResponseEntity<List<OrganizationOverviewDetails>> getOrganizationOverviewDetails() {
+        return new ResponseEntity<>(orgService.getOrganizationOverviewDetails(), OK);
     }
 
 }
