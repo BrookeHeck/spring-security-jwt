@@ -12,7 +12,7 @@ public interface RoleService {
 
     boolean deleteRolesByUserId(long userId);
 
-    boolean deleteRolesByOrganizationId(long organizationId);
+    void deleteRolesByOrganizationId(long organizationId);
 
     List<RoleDto> findRolesByUserId(long userId);
 

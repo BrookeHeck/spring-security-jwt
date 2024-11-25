@@ -1,20 +1,22 @@
 package com.games.flashcard.service;
 
 import com.games.flashcard.model.dtos.OrganizationDto;
-import com.games.flashcard.model.entities.Organization;
+import com.games.flashcard.model.query_models.OrganizationOverviewDetails;
 
 import java.util.List;
 
 public interface OrganizationService {
-    Organization findOrganizationById(long orgId);
+    OrganizationDto findOrganizationById(long orgId);
 
-    List<Organization> findAllOrganizations();
+    List<OrganizationDto> findAllOrganizations();
 
-    Organization findOrganizationByOrganizationCode(String code);
+    OrganizationDto findOrganizationByOrganizationCode(String code);
 
     boolean updateOrganizationDisplayName(String displayName, long orgId);
 
-    Organization createOrganization(OrganizationDto organizationDto);
+    OrganizationDto createOrganization(OrganizationDto organizationDto);
 
     void deleteOrganizationById(long orgId);
+
+    List<OrganizationOverviewDetails> getOrganizationOverviewDetails();
 }

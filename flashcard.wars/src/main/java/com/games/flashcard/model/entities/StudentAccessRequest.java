@@ -5,22 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class Flashcard implements Serializable {
+@NoArgsConstructor
+public class StudentAccessRequest implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String question;
-    private String answer;
-    private int points;
-    @ManyToOne
-    FlashcardSet flashcardSet;
-
+    @OneToOne
+    private Organization organization;
+    @OneToOne
+    private AppUser appUser;
+    @CreationTimestamp
+    private LocalDateTime timeOfInsert;
 }

@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class OrganizationDto implements Serializable {
+@NoArgsConstructor
+public class NewOrganizationRequestDto implements Serializable {
     private long id;
-    private String displayName;
-    private String organizationCode;
-    private LocalDateTime dateCreated;
+    private String organizationDisplayString;
+    private UserDto admin;
+    private LocalDateTime timeOfInsert;
 }
