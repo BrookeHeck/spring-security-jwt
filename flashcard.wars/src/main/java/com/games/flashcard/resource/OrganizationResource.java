@@ -22,8 +22,8 @@ public class OrganizationResource {
 
     @PostMapping(value = "create-organization")
     @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
-    public ResponseEntity<OrganizationDto> createOrganization(@RequestBody @Validated OrganizationDto organizationDto) {
-        return new ResponseEntity<>(orgService.createOrganization(organizationDto), CREATED);
+    public ResponseEntity<OrganizationDto> createOrganization(@RequestBody @Validated String organizationDisplayName) {
+        return new ResponseEntity<>(orgService.createOrganization(organizationDisplayName), CREATED);
     }
 
     @DeleteMapping(value = "delete-organization/{orgId}")
@@ -46,7 +46,7 @@ public class OrganizationResource {
     }
 
     @GetMapping(value = "get-organization-overview-details")
-    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
+//    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
     public ResponseEntity<List<OrganizationOverviewDetails>> getOrganizationOverviewDetails() {
         return new ResponseEntity<>(orgService.getOrganizationOverviewDetails(), OK);
     }

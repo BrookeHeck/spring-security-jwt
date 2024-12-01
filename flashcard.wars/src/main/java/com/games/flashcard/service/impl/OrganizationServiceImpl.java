@@ -44,8 +44,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public OrganizationDto createOrganization(OrganizationDto organizationDto) {
-        Organization organization = modelMapper.map(organizationDto, Organization.class);
+    public OrganizationDto createOrganization(String organizationDisplayName) {
+        Organization organization = new Organization();
+        organization.setDisplayName(organizationDisplayName);
         organization.setOrganizationCode(RandomStringUtils.randomAlphanumeric(10));
         return modelMapper.map(orgRepo.save(organization), OrganizationDto.class);
     }

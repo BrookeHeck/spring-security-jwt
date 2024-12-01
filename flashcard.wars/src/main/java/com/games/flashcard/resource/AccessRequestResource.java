@@ -21,7 +21,7 @@ public class AccessRequestResource {
     private final AccessRequestService accessRequestService;
 
     @GetMapping(value = "get-new-organization-requests")
-    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
+//    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
     public ResponseEntity<List<NewOrganizationRequestDto>> getNewOrganizationRequests() {
         return new ResponseEntity<>(accessRequestService.getAllNewOrganizationRequests(), OK);
     }
@@ -55,5 +55,10 @@ public class AccessRequestResource {
     public ResponseEntity<Boolean> denyStudentAccessRequest(@PathVariable long requestId, @PathVariable long orgId) {
         accessRequestService.deleteStudentAccessRequestById(requestId);
         return new ResponseEntity<>(true, OK);
+    }
+
+    @GetMapping(value = "get-number-of-new-org-requests")
+    public ResponseEntity<Double> getNumberOfNewOrgRequests() {
+        return new ResponseEntity<>(accessRequestService.getCountOfNewOrgRequests(), OK);
     }
 }

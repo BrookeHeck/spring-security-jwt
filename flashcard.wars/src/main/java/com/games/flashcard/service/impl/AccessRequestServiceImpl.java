@@ -63,4 +63,9 @@ public class AccessRequestServiceImpl implements AccessRequestService {
         StudentAccessRequest request = modelMapper.map(requestDto, StudentAccessRequest.class);
         return modelMapper.map(studentAccessRequestRepo.save(request), StudentAccessRequestDto.class);
     }
+
+    @Override
+    public double getCountOfNewOrgRequests() {
+        return newOrganizationRequestRepo.getCountOfNewOrganizationRequests();
+    }
 }

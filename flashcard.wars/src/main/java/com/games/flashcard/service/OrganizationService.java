@@ -14,7 +14,7 @@ public interface OrganizationService {
 
     boolean updateOrganizationDisplayName(String displayName, long orgId);
 
-    OrganizationDto createOrganization(OrganizationDto organizationDto);
+    OrganizationDto createOrganization(String organizationDisplayName);
 
     void deleteOrganizationById(long orgId);
 

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NewOrganizationRequestDto implements Serializable {
     private long id;
-    private String organizationDisplayString;
+    private String organizationDisplayName;
     private UserDto admin;
     private LocalDateTime timeOfInsert;
 }
