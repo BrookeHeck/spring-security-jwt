@@ -14,4 +14,5 @@ public interface AccessRequestService {
     void deleteStudentAccessRequestById(long requestId);
     StudentAccessRequestDto createStudentAccessRequest(StudentAccessRequestDto requestDto);
     double getCountOfNewOrgRequests();
+    long acceptNewOrganizationRequest(long requestId, String organizationName, long adminUserId);
 }
