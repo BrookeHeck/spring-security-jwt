@@ -32,16 +32,16 @@ public class AccessRequestResource {
         return new ResponseEntity<>(accessRequestService.createNewOrganizationRequest(request), CREATED);
     }
 
-    @PutMapping(value = "accept-access-request/{requestId}/{organizationDisplayName}/{userId}")
+    @PostMapping(value = "accept-access-request/{requestId}/{userId}")
     public ResponseEntity<Long> acceptAccessRequest(@PathVariable long requestId,
-                                                       @PathVariable String organizationDisplayName,
+                                                       @RequestBody String organizationDisplayName,
                                                        @PathVariable long userId) {
         long acceptedRequestId = accessRequestService.acceptNewOrganizationRequest(requestId, organizationDisplayName, userId);
         return new ResponseEntity<>(acceptedRequestId, CREATED);
     }
 
     @DeleteMapping(value = "deny-new-organization-request/{requestId}")
-    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION' and hasAuthority('SUPER'))")
+//    @PreAuthorize("hasAuthority('MANAGE_ORGANIZATION') and hasAuthority('SUPER')")
     public ResponseEntity<Long> denyNewOrganizationRequest(@PathVariable long requestId) {
         accessRequestService.deleteNewOrganizationRequestById(requestId);
         return new ResponseEntity<>(requestId, OK);
