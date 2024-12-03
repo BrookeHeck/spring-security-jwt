@@ -1,12 +1,17 @@
 package com.games.flashcard.service.impl;
 
 import com.games.flashcard.model.dtos.NewOrganizationRequestDto;
+import com.games.flashcard.model.dtos.OrganizationDto;
+import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.dtos.StudentAccessRequestDto;
 import com.games.flashcard.model.entities.NewOrganizationRequest;
 import com.games.flashcard.model.entities.StudentAccessRequest;
+import com.games.flashcard.model.enums.ROLE;
 import com.games.flashcard.repository.NewOrganizationRequestRepository;
 import com.games.flashcard.repository.StudentAccessRequestRepository;
 import com.games.flashcard.service.AccessRequestService;
+import com.games.flashcard.service.OrganizationService;
+import com.games.flashcard.service.RoleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,6 +28,8 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     private final ModelMapper modelMapper;
     private final StudentAccessRequestRepository studentAccessRequestRepo;
     private final NewOrganizationRequestRepository newOrganizationRequestRepo;
+    private final OrganizationService orgService;
+    private final RoleService roleService;
 
     @Override
     public List<NewOrganizationRequestDto> getAllNewOrganizationRequests() {
@@ -62,5 +69,19 @@ public class AccessRequestServiceImpl implements AccessRequestService {
     public StudentAccessRequestDto createStudentAccessRequest(StudentAccessRequestDto requestDto) {
         StudentAccessRequest request = modelMapper.map(requestDto, StudentAccessRequest.class);
         return modelMapper.map(studentAccessRequestRepo.save(request), StudentAccessRequestDto.class);
+    }
+
+    @Override
+    public double getCountOfNewOrgRequests() {
+        return newOrganizationRequestRepo.getCountOfNewOrganizationRequests();
+    }
+
+    @Override
+    public long acceptNewOrganizationRequest(long requestId, String organizationName, long adminUserId) {
+        OrganizationDto organization = orgService.createOrganization(organizationName);
+        RoleDto roleDto = new RoleDto(ROLE.ADMIN, organization.getId(), organizationName, adminUserId);
+        roleService.addNewRole(roleDto);
+        deleteNewOrganizationRequestById(requestId);
+        return requestId;
     }
 }

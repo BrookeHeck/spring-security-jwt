@@ -19,4 +19,7 @@ public interface NewOrganizationRequestRepository extends JpaRepository<NewOrgan
 
     void deleteNewOrganizationRequestById(long requestId);
 
+    @Query("select count(r) from NewOrganizationRequest r")
+    double getCountOfNewOrganizationRequests();
+
 }
