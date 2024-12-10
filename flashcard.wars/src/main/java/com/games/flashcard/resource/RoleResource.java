@@ -2,6 +2,7 @@ package com.games.flashcard.resource;
 
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.enums.ROLE;
+import com.games.flashcard.model.query_models.ManageAdminDetails;
 import com.games.flashcard.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,15 @@ import static org.springframework.http.HttpStatus.*;
 public class RoleResource {
     private final RoleService roleService;
     @GetMapping(value = "get-all-role-users-organization/{orgId}/{role}")
-    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #orgId, #role)")
+//    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #orgId, #role)")
     public ResponseEntity<List<RoleDto>> getAllRoleUsersForOrganization(@PathVariable long orgId,
                                                                         @PathVariable ROLE role) {
         return new ResponseEntity<>(roleService.findRolesByRoleAndOrganizationId(role, orgId), OK);
+    }
+
+    @GetMapping(value = "get-manage-admin-details/{orgId}")
+    public ResponseEntity<List<ManageAdminDetails>> getManageAdminDetailsForOrganization(@PathVariable long orgId) {
+        return new ResponseEntity<>(roleService.getManageAdminDetailsForOrganization(orgId), OK);
     }
 
     @PostMapping(value = "create-role")

@@ -2,6 +2,7 @@ package com.games.flashcard.service;
 
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.enums.ROLE;
+import com.games.flashcard.model.query_models.ManageAdminDetails;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface RoleService {
     List<RoleDto> findRolesByRole(ROLE role);
 
     List<RoleDto> findRolesByRoleAndOrganizationId(ROLE role, long organizationId);
+
+    List<ManageAdminDetails> getManageAdminDetailsForOrganization(long organizationId);
 }

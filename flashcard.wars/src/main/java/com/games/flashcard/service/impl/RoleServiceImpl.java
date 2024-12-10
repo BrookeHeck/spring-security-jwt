@@ -3,6 +3,7 @@ package com.games.flashcard.service.impl;
 import com.games.flashcard.model.dtos.RoleDto;
 import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
+import com.games.flashcard.model.query_models.ManageAdminDetails;
 import com.games.flashcard.repository.RoleRepository;
 import com.games.flashcard.service.RoleService;
 import jakarta.transaction.Transactional;
@@ -61,6 +62,11 @@ public class RoleServiceImpl implements RoleService {
     public List<RoleDto> findRolesByRoleAndOrganizationId(ROLE role, long organizationId) {
         return mapRoleRecordsToRoleDtos(roleRepo.findRolesByRoleAndOrganizationId(role, organizationId));
 
+    }
+
+    @Override
+    public List<ManageAdminDetails> getManageAdminDetailsForOrganization(long organizationId) {
+        return roleRepo.getManageAdminDetailsForOrganization(organizationId, ROLE.ADMIN);
     }
 
     private List<RoleDto> mapRoleRecordsToRoleDtos(List<Role> roleRecords) {

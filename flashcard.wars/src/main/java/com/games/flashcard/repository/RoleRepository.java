@@ -2,6 +2,7 @@ package com.games.flashcard.repository;
 
 import com.games.flashcard.model.entities.Role;
 import com.games.flashcard.model.enums.ROLE;
+import com.games.flashcard.model.query_models.ManageAdminDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,5 +29,10 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Query("select r from Role r where r.role=:ROLE and r.organization.id=:ORG_ID")
     List<Role> findRolesByRoleAndOrganizationId(@Param("ROLE") ROLE role, @Param("ORG_ID") long organizationId);
+
+    @Query("select new com.games.flashcard.model.query_models.ManageAdminDetails(r.id, r.user.id, r.user.firstName," +
+            "r.user.lastName, r.user.email, r.dateCreated, r.user.status) " +
+            "from Role r where r.role=:ADMIN and r.organization.id=:ORG_ID  ")
+    List<ManageAdminDetails> getManageAdminDetailsForOrganization(@Param("ORG_ID") long orgId, @Param("ADMIN") ROLE adminRole);
 
 }
