@@ -21,7 +21,5 @@ public interface RoleService {
 
     List<RoleDto> findRolesByRole(ROLE role);
 
-    List<RoleDto> findRolesByRoleAndOrganizationId(ROLE role, long organizationId);
-
     List<UserDetailsForRole> getUsersForRoleByOrganization(long organizationId, ROLE role);
 }

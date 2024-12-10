@@ -27,9 +27,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     List<Role> findRolesByRole(ROLE role);
 
-    @Query("select r from Role r where r.role=:ROLE and r.organization.id=:ORG_ID")
-    List<Role> findRolesByRoleAndOrganizationId(@Param("ROLE") ROLE role, @Param("ORG_ID") long organizationId);
-
     @Query("select new com.games.flashcard.model.query_models.UserDetailsForRole(r.id, r.user.id, r.user.firstName," +
             "r.user.lastName, r.user.email, r.dateCreated, r.user.status) " +
             "from Role r where r.role=:ROLE and r.organization.id=:ORG_ID  ")

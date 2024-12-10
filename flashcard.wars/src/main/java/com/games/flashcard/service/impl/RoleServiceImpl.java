@@ -59,12 +59,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleDto> findRolesByRoleAndOrganizationId(ROLE role, long organizationId) {
-        return mapRoleRecordsToRoleDtos(roleRepo.findRolesByRoleAndOrganizationId(role, organizationId));
-
-    }
-
-    @Override
     public List<UserDetailsForRole> getUsersForRoleByOrganization(long organizationId, ROLE role) {
         return roleRepo.getUsersForRoleByOrganization(organizationId, role);
     }

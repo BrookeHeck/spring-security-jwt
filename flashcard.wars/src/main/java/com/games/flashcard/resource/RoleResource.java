@@ -21,12 +21,6 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 public class RoleResource {
     private final RoleService roleService;
-    @GetMapping(value = "get-all-role-users-organization/{orgId}/{role}")
-//    @PreAuthorize("@authorization.userCanEditRoleAtOrg(#root, #orgId, #role)")
-    public ResponseEntity<List<RoleDto>> getAllRoleUsersForOrganization(@PathVariable long orgId,
-                                                                        @PathVariable ROLE role) {
-        return new ResponseEntity<>(roleService.findRolesByRoleAndOrganizationId(role, orgId), OK);
-    }
 
     @GetMapping(value = "get-user-details-for-role-by-org/{orgId}/{role}")
     public ResponseEntity<List<UserDetailsForRole>> getUsersForRoleByOrganization(@PathVariable long orgId,
